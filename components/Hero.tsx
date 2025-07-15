@@ -4,11 +4,15 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, Music } from "lucide-react
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-export function Hero() {
+export default function Hero() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <section className="relative flex items-center justify-center bg-white text-black py-100 px-4">
+      {/* Background pink circles */}
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-600 opacity-30 rounded-full blur-xl"></div>
+      <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-pink-600 opacity-20 rounded-full blur-xl"></div>
+
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

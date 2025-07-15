@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { FaPlay, FaShoppingCart, FaHeart } from "react-icons/fa"
+import { motion } from "framer-motion"
 
 const tracks = [
   {
@@ -46,9 +47,13 @@ export default function TracksSection() {
 
       <div className="flex flex-wrap justify-center gap-8 px-4">
         {tracks.map((track, index) => (
-          <div
+          <motion.div
             key={index}
             className="bg-neutral-900 p-6 rounded-xl w-full max-w-md flex flex-col items-center text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
           >
             <div className="flex items-center justify-center mb-4 bg-gradient-to-br from-pink-500 to-pink-300 p-4 rounded-full">
               <FaPlay className="text-white text-2xl" />
@@ -65,7 +70,7 @@ export default function TracksSection() {
               </Button>
               <FaHeart className="text-gray-500 hover:text-pink-500 cursor-pointer" />
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 

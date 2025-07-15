@@ -18,7 +18,7 @@ const SheetOverlay = React.forwardRef<
   <SheetPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 bg-black/60 backdrop-blur-sm z-50",
+      "fixed inset-0 z-50",
       className
     )}
     {...props}
@@ -44,4 +44,16 @@ const SheetContent = React.forwardRef<
 ))
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
-export { Sheet, SheetTrigger, SheetClose, SheetContent }
+const SheetTitle = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold", className)}
+    {...props}
+  />
+))
+SheetTitle.displayName = SheetPrimitive.Title.displayName
+
+export { Sheet, SheetTrigger, SheetClose, SheetContent, SheetTitle }

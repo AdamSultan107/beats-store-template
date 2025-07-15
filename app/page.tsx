@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
+import Hero from "@/components/Hero";
 import TracksSection from "@/components/TracksSection";
-import { Contact } from "@/components/Contact";
+import Contact from "@/components/Contact";
+import MailingList from "@/components/MailingList";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -10,7 +12,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <TracksSection />
+      <MailingList />
       <Contact />
+      <Footer />
     </>
   )
 }
