@@ -20,14 +20,14 @@ export default function Hero() {
       >
         {/* Main heading */}
         <h1 className="text-4xl md:text-6xl font-bold mb-6 font-['Arial_Narrow']">
-          Welcome to{" "}
+          welcome to{" "}
           <span className="bg-gradient-to-r from-pink-400 to-pink-200 bg-clip-text text-transparent">
             shadx2
           </span>
         </h1>
 
         <p className="text-xl md:text-2xl cursor-pointer font-bold text-black mb-12 font-['Arial_Narrow']">
-          Discover exclusive sound kits crafted for your next hit
+          discover exclusive sound kits crafted for your next hit
         </p>
 
         {/* Kit Preview */}
@@ -47,10 +47,10 @@ export default function Hero() {
             <p className="text-xl text-neutral-700 font-bold mb-4">$50.00</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button className="bg-gradient-to-r cursor-pointer from-pink-400 to-pink-200 text-white">
-                Add to Cart
+                add to cart
               </Button>
               <Button variant="outline" className="border-pink-400 cursor-pointer text-pink-500">
-                Buy Now
+                buy now
               </Button>
             </div>
           </div>
@@ -59,10 +59,10 @@ export default function Hero() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center font-['Arial_Narrow']">
           <Button className="bg-gradient-to-r from-pink-400 cursor-pointer to-pink-200 text-white">
-            Browse All Kits
+            browse all kits
           </Button>
           <Button variant="outline" className="border-pink-400 cursor-pointer text-pink-500">
-            Contact for Custom
+            contact for custom
           </Button>
         </div>
       </motion.div>
