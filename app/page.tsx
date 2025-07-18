@@ -7,6 +7,7 @@ import MailingList from "@/components/MailingList";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
 
+
 export default function Home() {
   return (
     <>

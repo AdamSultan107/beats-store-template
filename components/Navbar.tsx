@@ -14,20 +14,16 @@ const sections = ["beats", "about", "kits"]
 export default function Navbar() {
   const [cartItems, setCartItems] = useState(0)
   const [activeSection, setActiveSection] = useState("")
-
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [showKitsDropdown, setShowKitsDropdown] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsSheetOpen(false)
-      }
+      if (window.innerWidth >= 768) setIsSheetOpen(false)
     }
-
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
-
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,17 +31,12 @@ export default function Navbar() {
         const visible = entries.find((entry) => entry.isIntersecting)
         if (visible) setActiveSection(visible.target.id)
       },
-      {
-        rootMargin: "-40% 0px -55% 0px",
-        threshold: 0.1,
-      }
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0.1 }
     )
-
     sections.forEach((id) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
-
     return () => observer.disconnect()
   }, [])
 
@@ -56,33 +47,75 @@ export default function Navbar() {
         : "text-neutral-800 hover:text-pink-400"
     }`
 
+  const [kitsOpen, setKitsOpen] = useState(false)
+
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-neutral-200 py-4">
+    <nav className="sticky top-0 z-50 bg-white py-4">
+      {/* Floating Logo Animation */}
+      <style jsx>{`
+        @keyframes floating {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0); }
+        }
+        .animate-floating {
+          animation: floating 2.5s ease-in-out infinite;
+        }
+      `}</style>
+
       <div className="w-full mx-auto px-4 grid grid-cols-[auto_1fr_auto] items-center">
 
         {/* Left: Logo */}
         <div className="flex items-center">
-          <a href="/" className="flex items-center">
+          <a href="/" className="flex items-center animate-floating">
             <Image src={Logo} alt="Shadx2 Logo" width={150} height={150} />
           </a>
         </div>
 
-        {/* Center: Desktop Nav + Audio */}
-        <div className="hidden md:flex justify-center items-center font-[Arial_Narrow]">
+        {/* Center: Nav + Audio */}
+        <div className="hidden md:flex justify-center items-center font-[Arial_Narrow] relative">
           <div className="flex gap-6 text-[1.15rem]">
             <a
-              href="https://www.beatstars.com/shadx2?_gl=1*335z7v*_gcl_au*MjExMzY1NTQ4NS4xNzI2NjY5ODU1*_ga*MTQ3NDk3NjI1Mi4xNzI2NjY5ODU1*_ga_EFBBTCG2XY*MTcyNzg4ODUzOC40LjEuMTcyNzg4OTMzOC41NS4wLjA."
+              href="https://www.beatstars.com/shadx2"
               className={linkClass("beats")}
             >
               beats
             </a>
-            <a href="#about" className={linkClass("about")}>
+            <a href="/about" className={linkClass("about")}>
               about me
             </a>
-            <a href="#kits" className={linkClass("kits")}>
-              kits
-            </a>
+
+            {/* Kits with dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setKitsOpen(!kitsOpen)}
+                className={`flex items-center gap-1 ${linkClass("kits")} focus:outline-none text-pink-500 cursor-pointer`}
+              >
+                kits <span className="text-pink-500">▾</span>
+              </button>
+
+              {kitsOpen && (
+                <div className="absolute top-full left-0 mt-2 flex flex-col bg-white shadow-xl rounded-2xl py-4 px-6 w-48 z-50">
+                  {[
+                    "all kits",
+                    "one shot kits",
+                    "creative kits",
+                    "sample libraries",
+                    "bundles",
+                  ].map((label, index) => (
+                    <a
+                      key={index}
+                      href="#"
+                      className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-500 cursor-pointer"
+                    >
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
+
           <div className="ml-16">
             <AudioPlayer />
           </div>
