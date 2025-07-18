@@ -89,9 +89,9 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setKitsOpen(!kitsOpen)}
-                className={`flex items-center gap-1 ${linkClass("kits")} focus:outline-none text-pink-500 cursor-pointer`}
+                className={`flex items-center gap-1 ${linkClass("kits")} focus:outline-none text-pink-300 cursor-pointer`}
               >
-                kits <span className="text-pink-500">▾</span>
+                kits <span className="text-pink-300">▾</span>
               </button>
 
               {kitsOpen && (
@@ -106,7 +106,7 @@ export default function Navbar() {
                     <a
                       key={index}
                       href="#"
-                      className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-500 cursor-pointer"
+                      className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300 cursor-pointer"
                     >
                       {label}
                     </a>

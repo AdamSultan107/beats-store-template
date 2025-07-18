@@ -9,8 +9,8 @@ export default function Hero() {
   return (
     <section className="relative flex items-center justify-center bg-white text-black py-32 px-4">
       {/* Background pink circles */}
-      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-300 opacity-30 rounded-full blur-xl"></div>
-      <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-pink-300 opacity-20 rounded-full blur-xl"></div>
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-200 opacity-30 rounded-full blur-xl"></div>
+      <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-pink-200 opacity-20 rounded-full blur-xl"></div>
 
       <motion.div
         initial={{ opacity: 0, y: 50 }}

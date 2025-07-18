@@ -8,7 +8,7 @@ import {
   FaTiktok,
   FaPatreon
 } from "react-icons/fa"
-import Logo from "@/public/shadx2logo.png"
+import Logo from "@/public/shadlogo.png"
 
 export default function AboutMe() {
   return (
@@ -22,22 +22,22 @@ export default function AboutMe() {
           height={120}
           className="rounded-full shadow-md"
         />
-        <h1 className="text-4xl font-bold text-pink-500">shadx2</h1>
+        <h1 className="text-4xl font-bold text-pink-300">shadx2</h1>
         <p className="text-lg text-neutral-700 max-w-xl">
-          Welcome to the official website of <span className="font-semibold text-pink-500">shadx2</span> —
+          Welcome to the official website of <span className="font-semibold text-pink-300">shadx2</span> —
           a music producer and digital brand dedicated to pushing the boundaries of sound. Whether you're
           looking for beats, kits, or custom production, you're in the right place.
         </p>
       </div>
 
       {/* Social Icons */}
-      <div className="mt-10 flex justify-center gap-6 text-pink-400 text-2xl">
-        <FaYoutube className="hover:text-pink-600 cursor-pointer" />
-        <FaDiscord className="hover:text-pink-600 cursor-pointer" />
-        <FaInstagram className="hover:text-pink-600 cursor-pointer" />
-        <FaTwitter className="hover:text-pink-600 cursor-pointer" />
-        <FaSpotify className="hover:text-pink-600 cursor-pointer" />
-        <FaTiktok className="hover:text-pink-600 cursor-pointer" />
+      <div className="mt-10 flex justify-center gap-6 text-pink-300 text-2xl">
+        <FaYoutube className="hover:text-pink-300 cursor-pointer" />
+        <FaDiscord className="hover:text-pink-300 cursor-pointer" />
+        <FaInstagram className="hover:text-pink-300 cursor-pointer" />
+        <FaTwitter className="hover:text-pink-300 cursor-pointer" />
+        <FaSpotify className="hover:text-pink-300 cursor-pointer" />
+        <FaTiktok className="hover:text-pink-300 cursor-pointer" />
         <FaPatreon className="hover:text-pink-600 cursor-pointer" />
       </div>
 
@@ -45,25 +45,25 @@ export default function AboutMe() {
       <div className="mt-12 space-y-4 max-w-md mx-auto">
         <a
           href="#"
-          className="block border border-pink-400 rounded-md py-3 px-4 text-sm font-medium text-pink-500 hover:bg-pink-100 transition"
+          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
         >
           🎥 &nbsp; Subscribe on YouTube
         </a>
         <a
           href="#"
-          className="block border border-pink-400 rounded-md py-3 px-4 text-sm font-medium text-pink-500 hover:bg-pink-100 transition"
+          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
         >
           🎮 &nbsp; Join the Discord
         </a>
         <a
           href="#"
-          className="block border border-pink-400 rounded-md py-3 px-4 text-sm font-medium text-pink-500 hover:bg-pink-100 transition"
+          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
         >
           🌟 &nbsp; Support on Patreon
         </a>
         <a
           href="#"
-          className="block border border-pink-400 rounded-md py-3 px-4 text-sm font-medium text-pink-500 hover:bg-pink-100 transition"
+          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
         >
           🎧 &nbsp; Stream on Spotify
         </a>

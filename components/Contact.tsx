@@ -100,7 +100,7 @@ export default function Contact() {
               />
               <Button
                 type="submit"
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white cursor-pointerfont-semibold"
+                className="w-full bg-pink-300 hover:bg-pink-200 text-white cursor-pointerfont-semibold"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Sending..." : "send message"}
@@ -127,23 +127,23 @@ export default function Contact() {
                 <div className="flex flex-col gap-3">
                   <Button
                     variant="outline"
-                    className="justify-start border-pink-500 cursor-pointer text-pink-500 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    className="justify-start border-pink-300 cursor-pointer text-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
-                    <Instagram className="h-4 w-4 mr-2 text-pink-500" />
+                    <Instagram className="h-4 w-4 mr-2 text-pink-300" />
                     insta
                   </Button>
                   <Button
                     variant="outline"
-                    className="justify-start border-pink-500 cursor-pointer text-pink-500 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    className="justify-start border-pink-300 cursor-pointer text-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
-                    <Twitter className="h-4 w-4 mr-2 text-pink-500" />
+                    <Twitter className="h-4 w-4 mr-2 text-pink-300" />
                     twitter
                   </Button>
                   <Button
                     variant="outline"
-                    className="justify-start border-pink-500 cursor-pointer text-pink-500 hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    className="justify-start border-pink-300 cursor-pointer text-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
-                    <Youtube className="h-4 w-4 mr-2 text-pink-500" />
+                    <Youtube className="h-4 w-4 mr-2 text-pink-300" />
                     YT
                   </Button>
                 </div>
