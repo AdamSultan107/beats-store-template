@@ -15,6 +15,20 @@ export default function Navbar() {
   const [cartItems, setCartItems] = useState(0)
   const [activeSection, setActiveSection] = useState("")
 
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsSheetOpen(false)
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -53,15 +67,22 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Center: Nav + AudioPlayer side by side */}
-        <div className="hidden md:flex justify-center items-center" style={{ fontFamily: "Arial Narrow, Arial, sans-serif" }}>
-          {/* Nav Links */}
-          <div className="flex gap-6" style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>
-            <a href="https://www.beatstars.com/shadx2?_gl=1*335z7v*_gcl_au*MjExMzY1NTQ4NS4xNzI2NjY5ODU1*_ga*MTQ3NDk3NjI1Mi4xNzI2NjY5ODU1*_ga_EFBBTCG2XY*MTcyNzg4ODUzOC40LjEuMTcyNzg4OTMzOC41NS4wLjA." className={linkClass("beats")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>beats</a>
-            <a href="#about" className={linkClass("about")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>about me</a>
-            <a href="#kits" className={linkClass("kits")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>kits</a>
+        {/* Center: Desktop Nav + Audio */}
+        <div className="hidden md:flex justify-center items-center font-[Arial_Narrow]">
+          <div className="flex gap-6 text-[1.15rem]">
+            <a
+              href="https://www.beatstars.com/shadx2?_gl=1*335z7v*_gcl_au*MjExMzY1NTQ4NS4xNzI2NjY5ODU1*_ga*MTQ3NDk3NjI1Mi4xNzI2NjY5ODU1*_ga_EFBBTCG2XY*MTcyNzg4ODUzOC40LjEuMTcyNzg4OTMzOC41NS4wLjA."
+              className={linkClass("beats")}
+            >
+              beats
+            </a>
+            <a href="#about" className={linkClass("about")}>
+              about me
+            </a>
+            <a href="#kits" className={linkClass("kits")}>
+              kits
+            </a>
           </div>
-          {/* Audio Player */}
           <div className="ml-16">
             <AudioPlayer />
           </div>
@@ -85,19 +106,19 @@ export default function Navbar() {
           </Button>
 
           {/* Mobile Menu */}
-          <Sheet>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="md:hidden h-10 w-10 p-0 text-neutral-800 hover:text-pink-400 hover:bg-transparent">
                 <FaBars className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent className="w-[300px] sm:w-[400px] bg-white text-black">
+            <SheetContent className="w-[300px] sm:w-[400px] bg-white text-black pt-24">
               <SheetTitle className="sr-only">Main Menu</SheetTitle>
-              <div className="flex flex-col gap-6 mt-6">
+              <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-2">
                   <Image src={Logo} alt="Shadx2 Logo" width={32} height={32} className="w-auto h-8" />
                 </div>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 text-[1.15rem] font-[Arial_Narrow]">
                   <a href="#beats" className={linkClass("beats") + " p-2"}>beats</a>
                   <a href="#about" className={linkClass("about") + " p-2"}>about me</a>
                   <a href="#kits" className={linkClass("kits") + " p-2"}>kits</a>
