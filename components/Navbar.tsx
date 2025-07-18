@@ -57,7 +57,7 @@ export default function Navbar() {
         <div className="hidden md:flex justify-center items-center" style={{ fontFamily: "Arial Narrow, Arial, sans-serif" }}>
           {/* Nav Links */}
           <div className="flex gap-6" style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>
-            <a href="#beats" className={linkClass("beats")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>beats</a>
+            <a href="https://www.beatstars.com/shadx2?_gl=1*335z7v*_gcl_au*MjExMzY1NTQ4NS4xNzI2NjY5ODU1*_ga*MTQ3NDk3NjI1Mi4xNzI2NjY5ODU1*_ga_EFBBTCG2XY*MTcyNzg4ODUzOC40LjEuMTcyNzg4OTMzOC41NS4wLjA." className={linkClass("beats")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>beats</a>
             <a href="#about" className={linkClass("about")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>about me</a>
             <a href="#kits" className={linkClass("kits")} style={{ fontFamily: "Arial Narrow, Arial, sans-serif", fontSize: "1.15rem" }}>kits</a>
           </div>
