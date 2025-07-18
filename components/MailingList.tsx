@@ -35,11 +35,11 @@ export default function MailingList() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Join the <span className="text-pink-500">Newsletter</span>
+          <h2 className="text-3xl md:text-4xl text-pink-300 font-bold mb-4">
+            join the newsletter
           </h2>
           <p className="text-gray-600 mb-8">
-            Get updates on new beats, kits, and exclusive offers.
+            get updates on new beats, kits, and exclusive offers fast.
           </p>
 
           <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 items-center justify-center">
@@ -47,7 +47,7 @@ export default function MailingList() {
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 type="email"
-                placeholder="Your email address"
+                placeholder="email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -65,13 +65,13 @@ export default function MailingList() {
                   Subscribed
                 </>
               ) : (
-                "Subscribe"
+                "subscribe"
               )}
             </Button>
           </form>
 
           <p className="text-xs text-gray-500 mt-3">
-            No spam, unsubscribe anytime.
+            never spam, unsubscribe anytime.
           </p>
         </motion.div>
       </div>

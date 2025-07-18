@@ -48,11 +48,11 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
         >
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-3">
-              Get in <span className="text-pink-500">Touch</span>
+            <h2 className="text-4xl md:text-5xl text-pink-300 font-bold mb-3">
+              get in touch!
             </h2>
             <p className="text-gray-600 text-lg">
-              Questions about licensing, collaborations, or custom beats?
+              have any questions?
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   name="name"
-                  placeholder="Your name"
+                  placeholder="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -74,7 +74,7 @@ export default function Contact() {
                 <Input
                   name="email"
                   type="email"
-                  placeholder="Your email"
+                  placeholder="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -83,7 +83,7 @@ export default function Contact() {
               </div>
               <Input
                 name="subject"
-                placeholder="Subject"
+                placeholder="subject"
                 value={formData.subject}
                 onChange={handleChange}
                 required
@@ -91,7 +91,7 @@ export default function Contact() {
               />
               <Textarea
                 name="message"
-                placeholder="Your message..."
+                placeholder="message"
                 value={formData.message}
                 onChange={handleChange}
                 required
@@ -103,7 +103,7 @@ export default function Contact() {
                 className="w-full bg-pink-500 hover:bg-pink-600 text-white cursor-pointerfont-semibold"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? "Sending..." : "send message"}
               </Button>
             </form>
 
@@ -130,21 +130,21 @@ export default function Contact() {
                     className="justify-start border-pink-500 cursor-pointer text-pink-500 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
                     <Instagram className="h-4 w-4 mr-2 text-pink-500" />
-                    Instagram
+                    insta
                   </Button>
                   <Button
                     variant="outline"
                     className="justify-start border-pink-500 cursor-pointer text-pink-500 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
                     <Twitter className="h-4 w-4 mr-2 text-pink-500" />
-                    Twitter
+                    twitter
                   </Button>
                   <Button
                     variant="outline"
                     className="justify-start border-pink-500 cursor-pointer text-pink-500 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
                     <Youtube className="h-4 w-4 mr-2 text-pink-500" />
-                    YouTube
+                    YT
                   </Button>
                 </div>
               </div>

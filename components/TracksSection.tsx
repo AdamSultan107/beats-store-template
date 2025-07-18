@@ -39,10 +39,10 @@ export default function TracksSection() {
   return (
     <section className="bg-white text-black py-20 text-center px-4">
       <h2 className="text-4xl md:text-5xl text-pink-300 font-extrabold mb-4 font-['Arial_Narrow']">
-        Featured Tracks
+        featured tracks!
       </h2>
       <p className="text-lg text-neutral-600 font-bold mb-12 font-['Arial_Narrow']">
-        Discover our latest music productions, beats, and instrumentals
+        discover my latest music productions, beats, and instrumentals
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -59,14 +59,14 @@ export default function TracksSection() {
               <FaPlay className="text-white text-xl" />
             </div>
             <h3 className="text-lg font-bold mb-1 font-['Arial_Narrow']">{track.title}</h3>
-            <p className="text-pink-500 font-semibold text-sm mb-2">{track.genre}</p>
+            <p className="text-pink-500 font-semibold text-sm mb-2">{track.genre.toLowerCase()}</p>
             <p className="text-neutral-500 text-sm mb-4">
               {track.duration} • {track.bpm}
             </p>
             <p className="text-pink-500 font-bold text-lg mb-4">{track.price}</p>
             <div className="flex items-center gap-4">
               <Button className="bg-gradient-to-r from-pink-400 to-pink-300 text-white px-6 cursor-pointer">
-                <FaShoppingCart className="mr-2" /> Buy
+                <FaShoppingCart className="mr-2" /> buy
               </Button>
               {/* <FaHeart className="text-neutral-400 hover:text-pink-400 text-xl cursor-pointer" /> */}
             </div>
@@ -75,7 +75,7 @@ export default function TracksSection() {
       </div>
 
       <Button className="mt-12 bg-gradient-to-r from-pink-400 to-pink-300 text-white px-8 py-4 text-lg font-semibold cursor-pointer">
-        Load More Tracks
+        load more
       </Button>
     </section>
   );
