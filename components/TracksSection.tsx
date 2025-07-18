@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { Button } from "@/components/ui/button"
-import { FaPlay, FaShoppingCart, FaHeart } from "react-icons/fa"
-import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button";
+import { FaPlay, FaShoppingCart, FaHeart } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const tracks = [
   {
@@ -33,50 +33,50 @@ const tracks = [
     duration: "5:33",
     bpm: "85 BPM",
   },
-]
+];
 
 export default function TracksSection() {
   return (
-    <section className="bg-black text-white py-20 text-center">
-      <h2 className="text-5xl font-extrabold mb-4">
-        Featured <span className="text-pink-500">Tracks</span>
+    <section className="bg-white text-black py-20 text-center px-4">
+      <h2 className="text-4xl md:text-5xl text-pink-300 font-extrabold mb-4 font-['Arial_Narrow']">
+        Featured Tracks
       </h2>
-      <p className="text-lg text-gray-300 mb-12">
+      <p className="text-lg text-neutral-600 font-bold mb-12 font-['Arial_Narrow']">
         Discover our latest music productions, beats, and instrumentals
       </p>
 
-      <div className="flex flex-wrap justify-center gap-8 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
         {tracks.map((track, index) => (
           <motion.div
             key={index}
-            className="bg-neutral-900 p-6 rounded-xl w-full max-w-md flex flex-col items-center text-center"
+            className="bg-neutral-100 rounded-2xl shadow-md p-6 flex flex-col items-center transition hover:scale-105 hover:shadow-lg cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
           >
-            <div className="flex items-center justify-center mb-4 bg-gradient-to-br from-pink-500 to-pink-300 p-4 rounded-full">
-              <FaPlay className="text-white text-2xl" />
+            <div className="flex items-center justify-center mb-4 bg-gradient-to-br from-pink-400 to-pink-300 p-4 rounded-full">
+              <FaPlay className="text-white text-xl" />
             </div>
-            <h3 className="text-xl font-bold mb-1">{track.title}</h3>
-            <p className="text-gray-400 mb-2">{track.genre}</p>
-            <p className="text-gray-500 text-sm mb-4">
+            <h3 className="text-lg font-bold mb-1 font-['Arial_Narrow']">{track.title}</h3>
+            <p className="text-pink-500 font-semibold text-sm mb-2">{track.genre}</p>
+            <p className="text-neutral-500 text-sm mb-4">
               {track.duration} • {track.bpm}
             </p>
             <p className="text-pink-500 font-bold text-lg mb-4">{track.price}</p>
             <div className="flex items-center gap-4">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-6">
+              <Button className="bg-gradient-to-r from-pink-400 to-pink-300 text-white px-6 cursor-pointer">
                 <FaShoppingCart className="mr-2" /> Buy
               </Button>
-              <FaHeart className="text-gray-500 hover:text-pink-500 cursor-pointer" />
+              {/* <FaHeart className="text-neutral-400 hover:text-pink-400 text-xl cursor-pointer" /> */}
             </div>
           </motion.div>
         ))}
       </div>
 
-      <Button className="mt-12 bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 text-lg font-semibold">
+      <Button className="mt-12 bg-gradient-to-r from-pink-400 to-pink-300 text-white px-8 py-4 text-lg font-semibold cursor-pointer">
         Load More Tracks
       </Button>
     </section>
-  )
+  );
 }
