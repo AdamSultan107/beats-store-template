@@ -56,7 +56,7 @@ export default function MailingList() {
             </div>
             <Button
               type="submit"
-              className="bg-pink-500 hover:bg-pink-600 cursor-pointertext-white px-6 py-2"
+              className="bg-pink-300 hover:bg-pink-400 cursor-pointertext-white px-6 py-2"
               disabled={isSubscribed}
             >
               {isSubscribed ? (

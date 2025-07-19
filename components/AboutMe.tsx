@@ -33,9 +33,9 @@ export default function AboutMe() {
       {/* Social Icons */}
       <div className="mt-10 flex justify-center gap-6 text-pink-300 text-2xl">
         <FaYoutube className="hover:text-pink-300 cursor-pointer" />
-        <FaDiscord className="hover:text-pink-300 cursor-pointer" />
+        {/* <FaDiscord className="hover:text-pink-300 cursor-pointer" /> */}
         <FaInstagram className="hover:text-pink-300 cursor-pointer" />
-        <FaTwitter className="hover:text-pink-300 cursor-pointer" />
+        {/* <FaTwitter className="hover:text-pink-300 cursor-pointer" /> */}
         <FaSpotify className="hover:text-pink-300 cursor-pointer" />
         <FaTiktok className="hover:text-pink-300 cursor-pointer" />
         <FaPatreon className="hover:text-pink-600 cursor-pointer" />
@@ -44,30 +44,31 @@ export default function AboutMe() {
       {/* Social Buttons */}
       <div className="mt-12 space-y-4 max-w-md mx-auto">
         <a
-          href="#"
-          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
+            href="#"
+            className="flex items-center gap-3 border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
         >
-          🎥 &nbsp; Subscribe on YouTube
+            <FaYoutube className="text-lg" /> subscribe on youtube
+        </a>
+        {/* <a
+            href="#"
+            className="flex items-center gap-3 border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
+        >
+            <FaDiscord className="text-lg" /> Join the Discord
+        </a> */}
+        <a
+            href="#"
+            className="flex items-center gap-3 border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
+        >
+            <FaPatreon className="text-lg" /> support on patreon
         </a>
         <a
-          href="#"
-          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
+            href="#"
+            className="flex items-center gap-3 border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
         >
-          🎮 &nbsp; Join the Discord
+            <FaSpotify className="text-lg" /> listen on spotify
         </a>
-        <a
-          href="#"
-          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
-        >
-          🌟 &nbsp; Support on Patreon
-        </a>
-        <a
-          href="#"
-          className="block border border-pink-300 rounded-md py-3 px-4 text-sm font-medium text-pink-300 hover:bg-pink-100 transition"
-        >
-          🎧 &nbsp; Stream on Spotify
-        </a>
-      </div>
+       </div>
+
 
       {/* Footer */}
       <p className="mt-16 text-sm text-neutral-500">

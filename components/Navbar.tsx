@@ -76,6 +76,12 @@ export default function Navbar() {
         <div className="hidden md:flex justify-center items-center font-[Arial_Narrow] relative">
           <div className="flex gap-6 text-[1.15rem]">
             <a
+              href="/"
+              className={linkClass("home")}
+            >
+              home
+            </a>
+            <a
               href="https://www.beatstars.com/shadx2"
               className={linkClass("beats")}
             >
