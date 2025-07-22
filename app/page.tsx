@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import TracksSection from "@/components/TracksSection";
 import Contact from "@/components/Contact";
-import MailingList from "@/components/MailingList";
+import MailingList from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
 
