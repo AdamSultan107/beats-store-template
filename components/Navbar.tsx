@@ -79,37 +79,34 @@ export default function Navbar() {
           <div className="flex gap-6 text-[1.15rem]">
             <a
               href="/"
-              className={linkClass("home")}
             >
-              home
+              Home
             </a>
+            {/* INSERT YOUR BEATSTARS LINK */}
             <a
-              href="https://www.beatstars.com/shadx2"
-              className={linkClass("beats")}
+              href="https://www.beatstars.com/"
             >
-              beats
+              Beats
             </a>
-            <a href="/about" className={linkClass("about")}>
-              about me
+            <a href="/about">
+              About Me
             </a>
 
             {/* Kits with dropdown */}
             <div className="relative">
               <button
                 onClick={() => setKitsOpen(!kitsOpen)}
-                className={`flex items-center gap-1 ${linkClass("kits")} focus:outline-none text-pink-300 cursor-pointer`}
+                className={`flex items-center gap-1 focus:outline-none text-pink-400 cursor-pointer`}
               >
-                kits <span className="text-pink-300">▾</span>
+                Kits <span className="text-pink-300">▾</span>
               </button>
 
               {kitsOpen && (
                 <div className="absolute top-full left-0 mt-2 flex flex-col bg-white shadow-xl rounded-2xl py-4 px-6 w-48 z-50">
                   {[
-                    "all kits",
-                    "one shot kits",
-                    "creative kits",
-                    "sample libraries",
-                    "bundles",
+                    "All Kits",
+                    "One Shot Kits",
+                    "Creative Kits",
                   ].map((label, index) => (
                     <a
                       key={index}

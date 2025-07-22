@@ -100,7 +100,7 @@ export default function Contact() {
               />
               <Button
                 type="submit"
-                className="w-full bg-pink-300 hover:bg-pink-200 text-white cursor-pointerfont-semibold"
+                className="w-full bg-pink-500 hover:bg-pink-400 text-white cursor-pointer font-semibold"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Sending..." : "Send Message"}

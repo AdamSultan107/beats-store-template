@@ -72,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 text-center text-xs text-neutral-500 border-t border-neutral-200 pt-6">
-          © 2025 Adam Sultan. All rights reserved.
+          © 2025 YourBeats. All rights reserved.
         </div>
       </div>
     </footer>
