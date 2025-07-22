@@ -24,9 +24,9 @@ export default function AboutMe({ brandName = "YourBeats" }: AboutProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-     {/* Background pink circles */}
-      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-300 opacity-40 rounded-full blur-xl"></div>
-      <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-pink-300 opacity-40 rounded-full blur-xl"></div>
+      {/* Background pink circles with lower z-index */}
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-300 opacity-40 pointer-events-none rounded-full blur-xl z-[0]" />
+      <div className="absolute bottom-[-40px] right-[-60px] w-80 h-80 bg-pink-300 opacity-40 pointer-events-none rounded-full blur-xl z-[0]" />
 
       <div className="relative z-10">
         {/* Animated Hero Image */}
