@@ -1,14 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import Logo from "@/public/shadlogo.png"; // your logo
+import { Music } from "lucide-react";
 
 export default function Preloader() {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(false), 2000); // 2s preloader
+    const timer = setTimeout(() => setIsVisible(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -25,8 +24,10 @@ export default function Preloader() {
             initial={{ scale: 1 }}
             animate={{ scale: 1.2, opacity: 0 }}
             transition={{ duration: 2 }}
+            className="flex items-center space-x-4"
           >
-            <Image src={Logo} alt="Logo" width={1000} height={1000} />
+            <Music className="text-pink-500" width={100} height={100} />
+            <span className="text-7xl font-extrabold text-pink-500">YourBeats</span>
           </motion.div>
         </motion.div>
       )}

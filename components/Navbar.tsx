@@ -8,6 +8,7 @@ import Logo from "@/public/shadlogo.png"
 import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa"
 import { AiOutlineSearch } from "react-icons/ai"
 import AudioPlayer from "@/components/AudioPlayer"
+import { Music } from "lucide-react"
 
 const sections = ["beats", "about", "kits"]
 
@@ -68,7 +69,8 @@ export default function Navbar() {
         {/* Left: Logo */}
         <div className="flex items-center">
           <a href="/" className="flex items-center animate-floating">
-            <Image src={Logo} alt="Shadx2 Logo" width={150} height={150} />
+            <Music className="w-6 h-6 text-pink-500 mr-2" />
+            <span className="text-xl font-bold text-pink-500">YourBeats</span>
           </a>
         </div>
 
