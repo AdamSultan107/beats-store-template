@@ -49,10 +49,10 @@ export default function Contact() {
         >
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl text-pink-300 font-bold mb-3">
-              get in touch!
+              Get in Touch!
             </h2>
             <p className="text-gray-600 text-lg">
-              have any questions?
+              Have any questions?
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   name="name"
-                  placeholder="name"
+                  placeholder="Name"
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -74,7 +74,7 @@ export default function Contact() {
                 <Input
                   name="email"
                   type="email"
-                  placeholder="email"
+                  placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -83,7 +83,7 @@ export default function Contact() {
               </div>
               <Input
                 name="subject"
-                placeholder="subject"
+                placeholder="Subject"
                 value={formData.subject}
                 onChange={handleChange}
                 required
@@ -91,7 +91,7 @@ export default function Contact() {
               />
               <Textarea
                 name="message"
-                placeholder="message"
+                placeholder="Message"
                 value={formData.message}
                 onChange={handleChange}
                 required
@@ -103,7 +103,7 @@ export default function Contact() {
                 className="w-full bg-pink-300 hover:bg-pink-200 text-white cursor-pointerfont-semibold"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Sending..." : "send message"}
+                {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
 
@@ -112,13 +112,13 @@ export default function Contact() {
               <div>
                 <h3 className="text-xl font-semibold mb-3">Contact Info</h3>
                 <p className="text-gray-700 mb-1">
-                  <strong>Business:</strong> business@shadx2.com
+                  <strong>Business:</strong> business@gmail.com
                 </p>
                 <p className="text-gray-700 mb-1">
-                  <strong>Collabs:</strong> collab@shadx2.com
+                  <strong>Collabs:</strong> collab@gmail.com
                 </p>
                 <p className="text-gray-700">
-                  <strong>Support:</strong> support@shadx2.com
+                  <strong>Support:</strong> support@gmail.com
                 </p>
               </div>
 
@@ -130,21 +130,21 @@ export default function Contact() {
                     className="justify-start border-pink-300 cursor-pointer text-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
                     <Instagram className="h-4 w-4 mr-2 text-pink-300" />
-                    insta
+                    Instagram
                   </Button>
                   <Button
                     variant="outline"
                     className="justify-start border-pink-300 cursor-pointer text-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
                     <Twitter className="h-4 w-4 mr-2 text-pink-300" />
-                    twitter
+                    Twitter
                   </Button>
                   <Button
                     variant="outline"
                     className="justify-start border-pink-300 cursor-pointer text-pink-300 hover:bg-pink-50 hover:text-pink-600 transition-colors"
                   >
                     <Youtube className="h-4 w-4 mr-2 text-pink-300" />
-                    YT
+                    YouTube
                   </Button>
                 </div>
               </div>
