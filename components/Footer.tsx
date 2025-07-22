@@ -9,15 +9,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Section */}
           <div className="space-y-4">
-            <a href="/" className="block w-fit">
-              <Image
-                src={Logo}
-                alt="Shadx2 Logo"
-                width={120}
-                height={120}
-                className="cursor-pointer"
-              />
-            </a>
+            <div className="flex items-center gap-4">
+              <a href="/" className="block w-fit">
+                <div className="flex items-center gap-2">
+                  <Music className="w-6 h-6 text-pink-500" />
+                  <span className="text-xl font-bold text-pink-500">YourBeats</span>
+                </div>
+              </a>
+            </div>
+
             <p className="text-sm text-neutral-600 leading-relaxed">
               Creating amazing music experiences for producers and music lovers worldwide.
             </p>
@@ -72,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 text-center text-xs text-neutral-500 border-t border-neutral-200 pt-6">
-          © 2024 shadx2. All rights reserved. Built with passion for music.
+          © 2025 Adam Sultan. All rights reserved.
         </div>
       </div>
     </footer>
