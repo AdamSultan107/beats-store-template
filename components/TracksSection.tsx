@@ -39,10 +39,10 @@ export default function TracksSection() {
   return (
     <section className="bg-white text-black py-20 text-center px-4">
       <h2 className="text-4xl md:text-5xl text-pink-300 font-extrabold mb-4 font-['Arial_Narrow']">
-        featured tracks!
+        Featured Tracks
       </h2>
       <p className="text-lg text-neutral-600 font-bold mb-12 font-['Arial_Narrow']">
-        discover my latest music productions, beats, and instrumentals
+        Discover my latest music productions, beats, and instrumentals!
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -66,16 +66,15 @@ export default function TracksSection() {
             <p className="text-pink-500 font-bold text-lg mb-4">{track.price}</p>
             <div className="flex items-center gap-4">
               <Button className="bg-gradient-to-r from-pink-400 to-pink-300 text-white px-6 cursor-pointer">
-                <FaShoppingCart className="mr-2" /> buy
+                <FaShoppingCart className="mr-2" /> Add to Cart
               </Button>
-              {/* <FaHeart className="text-neutral-400 hover:text-pink-400 text-xl cursor-pointer" /> */}
             </div>
           </motion.div>
         ))}
       </div>
 
-      <Button className="mt-12 bg-gradient-to-r from-pink-400 to-pink-300 text-white px-8 py-4 text-lg font-semibold cursor-pointer">
-        load more
+      <Button className="mt-12 bg-gradient-to-r from-pink-400 to-pink-300 text-white px-8 py-4 transition-all text-lg hover:from-pink-500 hover:to-pink-300 hover:scale-105 font-semibold cursor-pointer">
+        Load More
       </Button>
     </section>
   );
