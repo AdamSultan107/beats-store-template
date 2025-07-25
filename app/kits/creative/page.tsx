@@ -1,23 +1,46 @@
-import Image from "next/image"
+"use client"
+
+import { useEffect, useState } from "react"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import KitCard from "@/components/KitCard"
-
-const creativeKits = [
-  { name: "10k", type: "Creative-Kit", price: "$10.00" },
-  { name: "Fantasia¹", type: "Creative-Kit", price: "$40.00" },
-  { name: "Spectrum", type: "Creative-Kit", price: "$30.00" },
-]
+import { supabase } from "@/lib/supabaseClient"
 
 export default function CreativeKitsPage() {
+  const [kits, setKits] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchCreativeKits = async () => {
+      const { data, error } = await supabase
+        .from("kits")
+        .select("*")
+        .ilike("type", "%creative%") // case-insensitive match
+
+      if (error) {
+        console.error("Error fetching creative kits:", error)
+      } else {
+        setKits(data)
+      }
+    }
+
+    fetchCreativeKits()
+  }, [])
+
   return (
     <div className="bg-white min-h-screen font-[Arial_Narrow]">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 pb-30 py-20">
         <h1 className="text-2xl font-bold mb-10 text-black uppercase">Creative Kits</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20">
-          {creativeKits.map((kit, index) => (
-            <KitCard key={index} name={kit.name} type={kit.type} price={kit.price} />
+          {kits.map((kit, index) => (
+            <KitCard
+              key={kit.id}
+              id={kit.id}
+              index={index}
+              name={kit.name}
+              type={kit.type}
+              price={`${Number(kit.price).toFixed(2)}`}
+            />
           ))}
         </div>
       </div>

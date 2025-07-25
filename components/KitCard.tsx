@@ -53,7 +53,7 @@ export default function KitCard({ id, name, type, price, index }: KitCardProps) 
           <button
             onClick={handleAddToCart}
             disabled={loading}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 text-sm rounded-xl transition"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-4 cursor-pointer py-2 text-sm rounded-xl transition"
           >
             {loading ? "Adding..." : "Add to Cart"}
           </button>
