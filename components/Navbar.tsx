@@ -9,6 +9,7 @@ import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa"
 import { AiOutlineSearch } from "react-icons/ai"
 import AudioPlayer from "@/components/AudioPlayer"
 import { Music } from "lucide-react"
+import Link from "next/link"
 
 const sections = ["beats", "about", "kits"]
 
@@ -16,7 +17,7 @@ export default function Navbar() {
   const [cartItems, setCartItems] = useState(0)
   const [activeSection, setActiveSection] = useState("")
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [showKitsDropdown, setShowKitsDropdown] = useState(false)
+  const [kitsOpen, setKitsOpen] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,8 +49,6 @@ export default function Navbar() {
         : "text-neutral-800 hover:text-pink-400"
     }`
 
-  const [kitsOpen, setKitsOpen] = useState(false)
-
   return (
     <nav className="sticky top-0 z-50 bg-white py-4">
       {/* Floating Logo Animation */}
@@ -65,7 +64,6 @@ export default function Navbar() {
       `}</style>
 
       <div className="w-full mx-auto px-4 grid grid-cols-[auto_1fr_auto] items-center">
-
         {/* Left: Logo */}
         <div className="flex items-center">
           <a href="/" className="flex items-center animate-floating">
@@ -77,45 +75,39 @@ export default function Navbar() {
         {/* Center: Nav + Audio */}
         <div className="hidden md:flex justify-center items-center font-[Arial_Narrow] relative">
           <div className="flex gap-6 text-[1.15rem]">
-            <a
-              href="/"
-            >
-              Home
-            </a>
-            {/* INSERT YOUR BEATSTARS LINK */}
-            <a
-              href="https://www.beatstars.com/"
-            >
-              Beats
-            </a>
-            <a href="/about">
-              About Me
-            </a>
+            <a href="/">Home</a>
+            <a href="https://www.beatstars.com/">Beats</a>
+            <a href="/about">About Me</a>
 
             {/* Kits with dropdown */}
             <div className="relative">
               <button
                 onClick={() => setKitsOpen(!kitsOpen)}
-                className={`flex items-center gap-1 focus:outline-none text-pink-400 cursor-pointer`}
+                className="flex items-center gap-1 focus:outline-none text-pink-400 cursor-pointer"
               >
                 Kits <span className="text-pink-300">▾</span>
               </button>
 
               {kitsOpen && (
                 <div className="absolute top-full left-0 mt-2 flex flex-col bg-white shadow-xl rounded-2xl py-4 px-6 w-48 z-50">
-                  {[
-                    "All Kits",
-                    "One Shot Kits",
-                    "Creative Kits",
-                  ].map((label, index) => (
-                    <a
-                      key={index}
-                      href="#"
-                      className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300 cursor-pointer"
-                    >
-                      {label}
-                    </a>
-                  ))}
+                  <Link
+                    href="/kits"
+                    className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300"
+                  >
+                    All Kits
+                  </Link>
+                  <Link
+                    href="/kits/creative"
+                    className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300"
+                  >
+                    Creative Kits
+                  </Link>
+                  <Link
+                    href="/kits/multi"
+                    className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300"
+                  >
+                    Multi Kits
+                  </Link>
                 </div>
               )}
             </div>
