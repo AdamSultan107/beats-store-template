@@ -123,14 +123,17 @@ export default function Navbar() {
           <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent">
             <AiOutlineSearch className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent relative">
-            <FaShoppingCart className="h-5 w-5" />
-            {cartItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-pink-400 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
-                {cartItems}
-              </span>
-            )}
-          </Button>
+          <Link href="/cart">
+            <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent relative">
+              <FaShoppingCart className="h-5 w-5" />
+              {cartItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-pink-400 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                  {cartItems}
+                </span>
+              )}
+            </Button>
+          </Link>
+
           <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent">
             <FaUser className="h-5 w-5" />
           </Button>

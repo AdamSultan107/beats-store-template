@@ -27,7 +27,7 @@ export default function CartPage() {
 
     const { data, error } = await supabase
       .from("cart_items")
-      .select("id, kit_id, kit(name, price, image_url)")
+      .select("id, kit_id, kit:kits(name, price, image_url)")
       .eq("guest_id", guestId)
 
     if (error) {
@@ -50,7 +50,10 @@ export default function CartPage() {
     fetchCartItems()
   }
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.kit.price, 0)
+  const totalPrice = cartItems.reduce((sum, item) => {
+  return item.kit?.price ? sum + item.kit.price : sum
+}, 0)
+
 
   useEffect(() => {
     fetchCartItems()
