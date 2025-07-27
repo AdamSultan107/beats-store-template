@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { supabase } from "@/lib/supabaseClient"
+import supabase from "@/lib/supabaseClient"
 import Image from "next/image"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+import { v4 as uuidv4 } from "uuid"
+import Toast from "@/components/Toast"
+
 
 type Kit = {
   id: string
@@ -16,9 +19,20 @@ type Kit = {
 }
 
 export default function KitDetailPage() {
+  const [toast, setToast] = useState(false)
   const { id } = useParams()
   const [kit, setKit] = useState<Kit | null>(null)
   const [loading, setLoading] = useState(true)
+  const [adding, setAdding] = useState(false) // ✅ Added
+
+  // ✅ Ensure guest_id is stored in localStorage
+  useEffect(() => {
+    const storedId = localStorage.getItem("shadx2_guest_id")
+    if (!storedId) {
+      const newId = uuidv4()
+      localStorage.setItem("shadx2_guest_id", newId)
+    }
+  }, [])
 
   useEffect(() => {
     async function fetchKit() {
@@ -38,6 +52,46 @@ export default function KitDetailPage() {
 
     if (id) fetchKit()
   }, [id])
+
+  const handleAddToCart = async () => {
+    if (!kit) return
+
+    const guestId = localStorage.getItem("shadx2_guest_id")
+    if (!guestId) return alert("Guest ID missing")
+
+    setAdding(true)
+
+    // ✅ Check for duplicates
+    const { data: existing, error: fetchError } = await supabase
+      .from("cart_items")
+      .select("id")
+      .eq("guest_id", guestId)
+      .eq("kit_id", kit.id)
+      .single()
+
+    if (existing) {
+      alert("This kit is already in your cart.")
+      setAdding(false)
+      return
+    }
+
+    // ✅ Add to cart
+    const { error: insertError } = await supabase.from("cart_items").insert([
+      {
+        guest_id: guestId,
+        kit_id: kit.id
+      }
+    ])
+
+    if (insertError) {
+      console.error("Failed to add to cart:", insertError)
+      alert("Error adding to cart.")
+    } else {
+      setToast(true)
+    }
+
+    setAdding(false)
+  }
 
   if (loading) {
     return (
@@ -62,6 +116,12 @@ export default function KitDetailPage() {
   return (
     <div className="bg-white min-h-screen font-[Arial_Narrow] text-black">
       <Navbar />
+      <Toast
+        message={`${kit.name} added to cart!`}
+        show={toast}
+        onClose={() => setToast(false)}
+      />
+
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <Image
@@ -76,8 +136,14 @@ export default function KitDetailPage() {
             <h1 className="text-3xl font-bold text-pink-400 mb-2">{kit.name}</h1>
             <p className="text-xl font-bold text-pink-500 mb-4">${kit.price.toFixed(2)}</p>
 
-            <button className="bg-pink-400 text-white cursor-pointer font-semibold px-6 py-2 hover:scale-105 rounded-lg hover:bg-pink-500 transition mb-6">
-              Add to Cart
+            <button
+              onClick={handleAddToCart}
+              disabled={adding}
+              className={`bg-pink-400 text-white font-semibold px-6 py-2 cursor-pointer rounded-lg transition mb-6 ${
+                adding ? "opacity-50 cursor-not-allowed" : "hover:scale-105 hover:bg-pink-500"
+              }`}
+            >
+              {adding ? "Adding..." : "Add to Cart"}
             </button>
 
             <p className="whitespace-pre-wrap text-lg text-neutral-800 mb-6">

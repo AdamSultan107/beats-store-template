@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import KitCard from "@/components/KitCard"
-import { supabase } from "@/lib/supabaseClient"
+import supabase from "@/lib/supabaseClient"
 
 export default function MultiKitsPage() {
   const [kits, setKits] = useState<any[]>([])
