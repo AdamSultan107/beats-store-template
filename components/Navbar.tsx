@@ -10,11 +10,29 @@ import { AiOutlineSearch } from "react-icons/ai"
 import AudioPlayer from "@/components/AudioPlayer"
 import { Music } from "lucide-react"
 import Link from "next/link"
+import supabase from "@/lib/supabaseClient"
 
 const sections = ["beats", "about", "kits"]
 
 export default function Navbar() {
   const [cartItems, setCartItems] = useState(0)
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      const guestId = localStorage.getItem("shadx2_guest_id")
+      if (!guestId) return
+
+      const { count } = await supabase
+        .from("cart_items")
+        .select("id", { count: "exact" })
+        .eq("guest_id", guestId)
+
+      setCartItems(count || 0)
+    }
+
+    fetchCartCount()
+  }, [])
+
   const [activeSection, setActiveSection] = useState("")
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [kitsOpen, setKitsOpen] = useState(false)
