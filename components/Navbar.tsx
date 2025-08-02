@@ -138,9 +138,9 @@ export default function Navbar() {
 
         {/* Right: Icons */}
         <div className="flex justify-end items-center gap-4">
-          <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent">
+          {/* <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent">
             <AiOutlineSearch className="h-5 w-5" />
-          </Button>
+          </Button> */}
           <Link href="/cart">
             <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent relative">
               <FaShoppingCart className="h-5 w-5" />

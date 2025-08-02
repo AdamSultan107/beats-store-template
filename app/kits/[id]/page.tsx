@@ -1,97 +1,106 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
-import supabase from "@/lib/supabaseClient"
-import Image from "next/image"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import { v4 as uuidv4 } from "uuid"
-import Toast from "@/components/Toast"
-
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import supabase from "@/lib/supabaseClient";
+import Image from "next/image";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { v4 as uuidv4 } from "uuid";
+import Toast from "@/components/Toast";
 
 type Kit = {
-  id: string
-  name: string
-  price: number
-  description: string
-  image_url: string | null
-}
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image_url: string | null;
+};
 
 export default function KitDetailPage() {
-  const [toast, setToast] = useState(false)
-  const { id } = useParams()
-  const [kit, setKit] = useState<Kit | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [adding, setAdding] = useState(false) // ✅ Added
+  const { id } = useParams();
+  const [kit, setKit] = useState<Kit | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [adding, setAdding] = useState(false);
 
-  // ✅ Ensure guest_id is stored in localStorage
+  // ✅ Toast state
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<"success" | "warning">("success");
+
+  const showToast = (message: string, type: "success" | "warning" = "success") => {
+    setToastMessage(message);
+    setToastType(type);
+    setToastVisible(true);
+  };
+
+  // ✅ Ensure guest_id is stored
   useEffect(() => {
-    const storedId = localStorage.getItem("shadx2_guest_id")
+    const storedId = localStorage.getItem("shadx2_guest_id");
     if (!storedId) {
-      const newId = uuidv4()
-      localStorage.setItem("shadx2_guest_id", newId)
+      const newId = uuidv4();
+      localStorage.setItem("shadx2_guest_id", newId);
     }
-  }, [])
+  }, []);
 
+  // ✅ Fetch kit details
   useEffect(() => {
     async function fetchKit() {
       const { data, error } = await supabase
         .from("kits")
         .select("*")
         .eq("id", id)
-        .single()
+        .single();
 
       if (error) {
-        console.error("Error fetching kit:", error)
+        console.error("Error fetching kit:", error);
       } else {
-        setKit(data)
+        setKit(data);
       }
-      setLoading(false)
+      setLoading(false);
     }
 
-    if (id) fetchKit()
-  }, [id])
+    if (id) fetchKit();
+  }, [id]);
 
+  // ✅ Add to cart with duplicate check
   const handleAddToCart = async () => {
-    if (!kit) return
+    if (!kit) return;
 
-    const guestId = localStorage.getItem("shadx2_guest_id")
-    if (!guestId) return alert("Guest ID missing")
+    const guestId = localStorage.getItem("shadx2_guest_id");
+    if (!guestId) return alert("Guest ID missing");
 
-    setAdding(true)
+    setAdding(true);
 
-    // ✅ Check for duplicates
-    const { data: existing, error: fetchError } = await supabase
+    const { data: existing } = await supabase
       .from("cart_items")
       .select("id")
       .eq("guest_id", guestId)
       .eq("kit_id", kit.id)
-      .single()
+      .single();
 
     if (existing) {
-      alert("This kit is already in your cart.")
-      setAdding(false)
-      return
+      showToast("Item already in cart.", "warning");
+      setAdding(false);
+      return;
     }
 
-    // ✅ Add to cart
     const { error: insertError } = await supabase.from("cart_items").insert([
       {
         guest_id: guestId,
         kit_id: kit.id
       }
-    ])
+    ]);
 
     if (insertError) {
-      console.error("Failed to add to cart:", insertError)
-      alert("Error adding to cart.")
+      console.error("Failed to add to cart:", insertError);
+      alert("Error adding to cart.");
     } else {
-      setToast(true)
+      showToast(`${kit.name} added to cart!`, "success");
     }
 
-    setAdding(false)
-  }
+    setAdding(false);
+  };
 
   if (loading) {
     return (
@@ -100,7 +109,7 @@ export default function KitDetailPage() {
         <p className="text-xl">Loading...</p>
         <Footer />
       </div>
-    )
+    );
   }
 
   if (!kit) {
@@ -110,16 +119,19 @@ export default function KitDetailPage() {
         <p className="text-xl">Kit not found.</p>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
     <div className="bg-white min-h-screen font-[Arial_Narrow] text-black">
       <Navbar />
+
+      {/* ✅ Toast Component */}
       <Toast
-        message={`${kit.name} added to cart!`}
-        show={toast}
-        onClose={() => setToast(false)}
+        message={toastMessage}
+        show={toastVisible}
+        type={toastType}
+        onClose={() => setToastVisible(false)}
       />
 
       <section className="max-w-5xl mx-auto px-6 py-20">
@@ -165,5 +177,5 @@ export default function KitDetailPage() {
       </section>
       <Footer />
     </div>
-  )
+  );
 }

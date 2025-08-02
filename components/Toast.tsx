@@ -1,35 +1,47 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 
-type ToastProps = {
-  message: string
-  show: boolean
-  onClose: () => void
+interface ToastProps {
+  message: string;
+  show: boolean;
+  onClose: () => void;
+  duration?: number;
+  type?: "success" | "warning";
 }
 
-export default function Toast({ message, show, onClose }: ToastProps) {
-  const [visible, setVisible] = useState(show)
+export default function Toast({
+  message,
+  show,
+  onClose,
+  duration = 3000,
+  type = "success",
+}: ToastProps) {
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
     if (show) {
-      setVisible(true)
-      const timeout = setTimeout(() => {
-        setVisible(false)
-        onClose()
-      }, 3000)
-
-      return () => clearTimeout(timeout)
+      setFadeOut(false);
+      const fadeTimer = setTimeout(() => setFadeOut(true), duration - 300); // start fading before removal
+      const removeTimer = setTimeout(onClose, duration);
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(removeTimer);
+      };
     }
-  }, [show, onClose])
+  }, [show, duration, onClose]);
 
-  if (!visible) return null
+  if (!show) return null;
+
+  const bgColor = type === "warning" ? "bg-yellow-500" : "bg-pink-500";
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <div className="bg-pink-500 text-white px-4 py-3 rounded-lg shadow-lg text-sm animate-slide-in">
-        {message}
-      </div>
+    <div
+      className={`fixed top-20 left-1/2 -translate-x-1/2 text-white px-6 py-3 text-base rounded-lg shadow-md z-50 font-[Arial_Narrow] transition-opacity duration-300 ${
+        bgColor
+      } ${fadeOut ? "opacity-0" : "opacity-100"}`}
+    >
+      {message}
     </div>
-  )
+  );
 }
