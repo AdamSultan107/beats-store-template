@@ -142,6 +142,8 @@ export default function Navbar() {
 
         {/* Right: Icons */}
         <div className="flex justify-end items-center gap-4">
+          
+          {/* Cart */}
           <Link href="/cart">
             <Button
               variant="ghost"
@@ -155,13 +157,16 @@ export default function Navbar() {
               )}
             </Button>
           </Link>
-
-          <Button
-            variant="ghost"
-            className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent"
-          >
-            <FaUser className="h-5 w-5" />
+          
+          {/* Login */}
+          <Link href="/login">
+            <Button
+              variant="ghost"
+              className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent"
+            >
+              <FaUser className="h-5 w-5" />
           </Button>
+          </Link>
 
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
