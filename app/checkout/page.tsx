@@ -33,7 +33,7 @@ export default function CheckoutPage() {
 
       const { data, error } = await supabase
         .from("cart_items")
-        .select("id, kit_id, kit(name, price)")
+        .select("id, kit_id, kit:kits(name, price)")
         .eq("guest_id", guestId);
 
       if (error) {
