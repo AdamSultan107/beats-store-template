@@ -19,6 +19,7 @@ type CartItem = {
 
 export default function CartPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,8 +55,6 @@ export default function CartPage() {
     const guestId = localStorage.getItem("shadx2_guest_id");
     if (!guestId) return;
 
-    if (!confirm("Are you sure you want to clear your cart?")) return;
-
     const { error } = await supabase
       .from("cart_items")
       .delete()
@@ -65,6 +64,8 @@ export default function CartPage() {
       console.error("Error clearing cart:", error);
     } else {
       fetchCartItems();
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
     }
   };
 
@@ -77,9 +78,16 @@ export default function CartPage() {
   }, []);
 
   return (
-    <div className="bg-white text-black font-[Arial_Narrow] min-h-screen">
+    <div className="bg-white text-black font-[Arial_Narrow] min-h-screen relative">
       <Navbar />
       <main className="max-w-5xl mx-auto px-6 py-16">
+        {showToast && (
+          <div className="mb-6 text-center">
+            <div className="inline-block bg-pink-500 text-white font-semibold py-2 px-4 rounded-xl shadow transition">
+              Your cart has been cleared.
+            </div>
+          </div>
+        )}
         <h1 className="text-3xl font-bold mb-10 text-center">Your Cart</h1>
 
         {loading ? (
@@ -106,7 +114,7 @@ export default function CartPage() {
                 </div>
                 <button
                   onClick={() => handleRemove(item.id)}
-                  className="text-sm text-pink-500 hover:text-pink-700 font-semibold"
+                  className="text-sm text-pink-500 hover:text-pink-700 font-semibold cursor-pointer"
                 >
                   Remove
                 </button>
@@ -121,7 +129,7 @@ export default function CartPage() {
             <div className="flex justify-end">
               <button
                 onClick={() => setShowConfirmModal(true)}
-                className="text-sm text-red-500 hover:text-red-700 font-semibold"
+                className="text-sm text-red-500 cursor-pointer hover:text-red-700 font-semibold"
               >
                 Clear Cart
               </button>
@@ -129,12 +137,12 @@ export default function CartPage() {
 
             <div className="text-center mt-8 space-y-4">
               <Link href="/checkout">
-                <button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-lg transition">
+                <button className="bg-pink-500 hover:bg-pink-600 cursor-pointer text-white px-6 py-2 rounded-lg transition">
                   Proceed to Checkout
                 </button>
               </Link>
               <Link href="/kits">
-                <button className="border border-pink-400 text-pink-500 hover:bg-pink-100 px-6 py-2 rounded-lg transition ml-4">
+                <button className="border border-pink-400 cursor-pointer text-pink-500 hover:bg-pink-100 px-6 py-2 rounded-lg transition ml-4">
                   Continue Shopping
                 </button>
               </Link>
@@ -144,6 +152,7 @@ export default function CartPage() {
       </main>
       <Footer />
 
+      {/* Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-lg font-[Arial_Narrow]">
@@ -156,7 +165,7 @@ export default function CartPage() {
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 text-sm text-neutral-600 border border-neutral-300 rounded-lg hover:bg-neutral-100"
+                className="px-4 py-2 text-sm text-neutral-600 border border-neutral-300 rounded-lg hover:bg-neutral-100 cursor-pointer"
               >
                 Cancel
               </button>
@@ -165,7 +174,7 @@ export default function CartPage() {
                   setShowConfirmModal(false);
                   await handleClearCart();
                 }}
-                className="px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg"
+                className="px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg cursor-pointer"
               >
                 Yes, Clear
               </button>

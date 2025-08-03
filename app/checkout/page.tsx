@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
+import { getOrGenerateGuestId } from "@/lib/guest";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -23,9 +24,8 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
-  const guestId = typeof window !== "undefined"
-    ? localStorage.getItem("shadx2_guest_id")
-    : null;
+  const guestId =
+    typeof window !== "undefined" ? getOrGenerateGuestId() : null;
 
   useEffect(() => {
     async function fetchCart() {
@@ -39,7 +39,6 @@ export default function CheckoutPage() {
       if (error) {
         console.error("Failed to fetch cart:", error);
       } else if (data) {
-        // Fix: kit is returned as an array, extract the first element
         setCartItems(
           data.map((item: any) => ({
             ...item,
@@ -85,11 +84,8 @@ export default function CheckoutPage() {
       return;
     }
 
-    // ✅ Clear cart
     await supabase.from("cart_items").delete().eq("guest_id", guestId);
-
-    // ✅ Redirect
-    router.push("/thank-you");
+    router.push("/thankyou?status=success");
   };
 
   return (
@@ -129,7 +125,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className={`bg-pink-500 text-white font-semibold px-6 py-2 rounded-lg ${
+                className={`bg-pink-500 text-white cursor-pointer font-semibold px-6 py-2 rounded-lg ${
                   submitting ? "opacity-60 cursor-not-allowed" : "hover:bg-pink-600"
                 }`}
               >

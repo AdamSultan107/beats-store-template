@@ -1,80 +1,85 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
-import Image from "next/image"
-import Logo from "@/public/shadlogo.png"
-import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa"
-import { AiOutlineSearch } from "react-icons/ai"
-import AudioPlayer from "@/components/AudioPlayer"
-import { Music } from "lucide-react"
-import Link from "next/link"
-import supabase from "@/lib/supabaseClient"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import Image from "next/image";
+import Logo from "@/public/shadlogo.png";
+import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
+import { Music } from "lucide-react";
+import Link from "next/link";
+import AudioPlayer from "@/components/AudioPlayer";
+import supabase from "@/lib/supabaseClient";
 
-const sections = ["beats", "about", "kits"]
+const sections = ["beats", "about", "kits"];
 
 export default function Navbar() {
-  const [cartItems, setCartItems] = useState(0)
+  const [cartItems, setCartItems] = useState(0);
+  const [activeSection, setActiveSection] = useState("");
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [kitsOpen, setKitsOpen] = useState(false);
 
   useEffect(() => {
     const fetchCartCount = async () => {
-      const guestId = localStorage.getItem("shadx2_guest_id")
-      if (!guestId) return
+      const guestId = localStorage.getItem("shadx2_guest_id");
+      if (!guestId) return;
 
       const { count } = await supabase
         .from("cart_items")
         .select("id", { count: "exact" })
-        .eq("guest_id", guestId)
+        .eq("guest_id", guestId);
 
-      setCartItems(count || 0)
-    }
+      setCartItems(count || 0);
+    };
 
-    fetchCartCount()
-  }, [])
-
-  const [activeSection, setActiveSection] = useState("")
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [kitsOpen, setKitsOpen] = useState(false)
+    fetchCartCount();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) setIsSheetOpen(false)
-    }
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+      if (window.innerWidth >= 768) setIsSheetOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting)
-        if (visible) setActiveSection(visible.target.id)
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActiveSection(visible.target.id);
       },
       { rootMargin: "-40% 0px -55% 0px", threshold: 0.1 }
-    )
+    );
+
     sections.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-    return () => observer.disconnect()
-  }, [])
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const linkClass = (id: string) =>
     `text-medium font-medium lowercase transition ${
       activeSection === id
         ? "text-pink-500 underline underline-offset-4"
         : "text-neutral-800 hover:text-pink-400"
-    }`
+    }`;
 
   return (
     <nav className="sticky top-0 z-50 bg-white py-4">
-      {/* Floating Logo Animation */}
       <style jsx>{`
         @keyframes floating {
-          0% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-          100% { transform: translateY(0); }
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+          100% {
+            transform: translateY(0);
+          }
         }
         .animate-floating {
           animation: floating 2.5s ease-in-out infinite;
@@ -97,7 +102,6 @@ export default function Navbar() {
             <a href="https://www.beatstars.com/">Beats</a>
             <a href="/about">About Me</a>
 
-            {/* Kits with dropdown */}
             <div className="relative">
               <button
                 onClick={() => setKitsOpen(!kitsOpen)}
@@ -138,11 +142,11 @@ export default function Navbar() {
 
         {/* Right: Icons */}
         <div className="flex justify-end items-center gap-4">
-          {/* <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent">
-            <AiOutlineSearch className="h-5 w-5" />
-          </Button> */}
           <Link href="/cart">
-            <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent relative">
+            <Button
+              variant="ghost"
+              className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent relative"
+            >
               <FaShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-pink-400 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
@@ -152,14 +156,19 @@ export default function Navbar() {
             </Button>
           </Link>
 
-          <Button variant="ghost" className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent">
+          <Button
+            variant="ghost"
+            className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent"
+          >
             <FaUser className="h-5 w-5" />
           </Button>
 
-          {/* Mobile Menu */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" className="md:hidden h-10 w-10 p-0 text-neutral-800 hover:text-pink-400 hover:bg-transparent">
+              <Button
+                variant="ghost"
+                className="md:hidden h-10 w-10 p-0 text-neutral-800 hover:text-pink-400 hover:bg-transparent"
+              >
                 <FaBars className="h-5 w-5" />
               </Button>
             </SheetTrigger>
@@ -170,9 +179,15 @@ export default function Navbar() {
                   <Image src={Logo} alt="Shadx2 Logo" width={32} height={32} className="w-auto h-8" />
                 </div>
                 <div className="flex flex-col gap-4 text-[1.15rem] font-[Arial_Narrow]">
-                  <a href="#beats" className={linkClass("beats") + " p-2"}>beats</a>
-                  <a href="#about" className={linkClass("about") + " p-2"}>about me</a>
-                  <a href="#kits" className={linkClass("kits") + " p-2"}>kits</a>
+                  <a href="#beats" className={linkClass("beats") + " p-2"}>
+                    beats
+                  </a>
+                  <a href="#about" className={linkClass("about") + " p-2"}>
+                    about me
+                  </a>
+                  <a href="#kits" className={linkClass("kits") + " p-2"}>
+                    kits
+                  </a>
                 </div>
               </div>
             </SheetContent>
@@ -180,5 +195,5 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
