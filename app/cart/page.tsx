@@ -1,84 +1,80 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import supabase from "@/lib/supabaseClient"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import Image from "next/image"
-import Link from "next/link"
+import { useEffect, useState } from "react";
+import supabase from "@/lib/supabaseClient";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Image from "next/image";
+import Link from "next/link";
 
 type CartItem = {
-  id: string
-  kit_id: string
+  id: string;
+  kit_id: string;
   kit: {
-    name: string
-    price: number
-    image_url: string | null
-  }
-}
+    name: string;
+    price: number;
+    image_url: string | null;
+  };
+};
 
 export default function CartPage() {
-  const [showConfirmModal, setShowConfirmModal] = useState(false)
-
-  const [cartItems, setCartItems] = useState<CartItem[]>([])
-  const [loading, setLoading] = useState(true)
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchCartItems = async () => {
-    const guestId = localStorage.getItem("shadx2_guest_id")
-    if (!guestId) return
+    const guestId = localStorage.getItem("shadx2_guest_id");
+    if (!guestId) return;
 
     const { data, error } = await supabase
       .from("cart_items")
       .select("id, kit_id, kit:kits(name, price, image_url)")
-      .eq("guest_id", guestId)
+      .eq("guest_id", guestId);
 
     if (error) {
-      console.error("Error loading cart:", error)
+      console.error("Error loading cart:", error);
     } else {
-      // Fix: map kit from array to object
       setCartItems(
         (data || []).map((item: any) => ({
           ...item,
           kit: Array.isArray(item.kit) ? item.kit[0] : item.kit,
         }))
-      )
+      );
     }
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const handleRemove = async (itemId: string) => {
-    await supabase.from("cart_items").delete().eq("id", itemId)
-    fetchCartItems()
-  }
+    await supabase.from("cart_items").delete().eq("id", itemId);
+    fetchCartItems();
+  };
 
   const handleClearCart = async () => {
-  const guestId = localStorage.getItem("shadx2_guest_id")
-  if (!guestId) return
+    const guestId = localStorage.getItem("shadx2_guest_id");
+    if (!guestId) return;
 
-  const { error } = await supabase
-    .from("cart_items")
-    .delete()
-    .eq("guest_id", guestId)
+    if (!confirm("Are you sure you want to clear your cart?")) return;
 
-  if (!confirm("Are you sure you want to clear your cart?")) return;
+    const { error } = await supabase
+      .from("cart_items")
+      .delete()
+      .eq("guest_id", guestId);
 
-  if (error) {
-    console.error("Error clearing cart:", error)
-  } else {
-    fetchCartItems()
-  }
-}
-
+    if (error) {
+      console.error("Error clearing cart:", error);
+    } else {
+      fetchCartItems();
+    }
+  };
 
   const totalPrice = cartItems.reduce((sum, item) => {
-  return item.kit?.price ? sum + item.kit.price : sum
-}, 0)
-
+    return item.kit?.price ? sum + item.kit.price : sum;
+  }, 0);
 
   useEffect(() => {
-    fetchCartItems()
-  }, [])
+    fetchCartItems();
+  }, []);
 
   return (
     <div className="bg-white text-black font-[Arial_Narrow] min-h-screen">
@@ -130,9 +126,15 @@ export default function CartPage() {
                 Clear Cart
               </button>
             </div>
-            <div className="text-center mt-6">
+
+            <div className="text-center mt-8 space-y-4">
+              <Link href="/checkout">
+                <button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-lg transition">
+                  Proceed to Checkout
+                </button>
+              </Link>
               <Link href="/kits">
-                <button className="bg-pink-500 hover:bg-pink-600 cursor-pointer text-white px-6 py-2 rounded-lg transition">
+                <button className="border border-pink-400 text-pink-500 hover:bg-pink-100 px-6 py-2 rounded-lg transition ml-4">
                   Continue Shopping
                 </button>
               </Link>
@@ -141,35 +143,36 @@ export default function CartPage() {
         )}
       </main>
       <Footer />
+
       {showConfirmModal && (
-      <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-        <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-lg font-[Arial_Narrow]">
-          <h2 className="text-lg font-semibold text-neutral-800 mb-4">
-            Clear Cart?
-          </h2>
-          <p className="text-sm text-neutral-600 mb-6">
-            Are you sure you want to remove all items from your cart?
-          </p>
-          <div className="flex justify-center gap-4">
-            <button
-              onClick={() => setShowConfirmModal(false)}
-              className="px-4 py-2 text-sm text-neutral-600 border border-neutral-300 rounded-lg hover:bg-neutral-100"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={async () => {
-                setShowConfirmModal(false)
-                await handleClearCart()
-              }}
-              className="px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg"
-            >
-              Yes, Clear
-            </button>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-lg font-[Arial_Narrow]">
+            <h2 className="text-lg font-semibold text-neutral-800 mb-4">
+              Clear Cart?
+            </h2>
+            <p className="text-sm text-neutral-600 mb-6">
+              Are you sure you want to remove all items from your cart?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2 text-sm text-neutral-600 border border-neutral-300 rounded-lg hover:bg-neutral-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  setShowConfirmModal(false);
+                  await handleClearCart();
+                }}
+                className="px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg"
+              >
+                Yes, Clear
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
-  )
+  );
 }
