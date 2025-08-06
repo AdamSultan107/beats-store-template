@@ -26,6 +26,7 @@ export default function AudioPlayer() {
     }
   }
 
+  // Straightforward play/pause toggle
   const togglePlay = () => {
     const audio = audioRef.current
     if (!audio) return

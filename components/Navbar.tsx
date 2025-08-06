@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import Image from "next/image";
 import Logo from "@/public/shadlogo.png";
 import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
@@ -10,6 +15,7 @@ import { Music } from "lucide-react";
 import Link from "next/link";
 import AudioPlayer from "@/components/AudioPlayer";
 import supabase from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 const sections = ["beats", "about", "kits"];
 
@@ -18,6 +24,17 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [kitsOpen, setKitsOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUserEmail(session?.user?.email || null);
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const fetchCartCount = async () => {
@@ -66,6 +83,21 @@ export default function Navbar() {
         ? "text-pink-500 underline underline-offset-4"
         : "text-neutral-800 hover:text-pink-400"
     }`;
+
+  const handleProfileClick = () => {
+    if (!userEmail) {
+      router.push("/login");
+    }
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout failed:", error.message);
+    } else {
+      window.location.reload(); // reload to reset UI state
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white py-4">
@@ -142,7 +174,12 @@ export default function Navbar() {
 
         {/* Right: Icons */}
         <div className="flex justify-end items-center gap-4">
-          
+          {userEmail && (
+            <span className="text-sm text-neutral-600 italic">
+              Logged in as: {userEmail}
+            </span>
+          )}
+
           {/* Cart */}
           <Link href="/cart">
             <Button
@@ -157,17 +194,27 @@ export default function Navbar() {
               )}
             </Button>
           </Link>
-          
-          {/* Login */}
-          <Link href="/login">
+
+          {/* Profile or Logout */}
+          {userEmail ? (
             <Button
+              onClick={handleLogout}
+              variant="ghost"
+              className="h-10 px-3 text-sm text-neutral-800 hover:text-pink-400 hover:bg-transparent"
+            >
+              Log Out
+            </Button>
+          ) : (
+            <Button
+              onClick={handleProfileClick}
               variant="ghost"
               className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent"
             >
               <FaUser className="h-5 w-5" />
-          </Button>
-          </Link>
+            </Button>
+          )}
 
+          {/* Mobile Menu */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button
@@ -181,7 +228,13 @@ export default function Navbar() {
               <SheetTitle className="sr-only">Main Menu</SheetTitle>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-2">
-                  <Image src={Logo} alt="Shadx2 Logo" width={32} height={32} className="w-auto h-8" />
+                  <Image
+                    src={Logo}
+                    alt="Shadx2 Logo"
+                    width={32}
+                    height={32}
+                    className="w-auto h-8"
+                  />
                 </div>
                 <div className="flex flex-col gap-4 text-[1.15rem] font-[Arial_Narrow]">
                   <a href="#beats" className={linkClass("beats") + " p-2"}>

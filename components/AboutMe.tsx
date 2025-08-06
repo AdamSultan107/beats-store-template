@@ -24,12 +24,12 @@ export default function AboutMe({ brandName = "YourBeats" }: AboutProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      {/* Background pink circles with lower z-index */}
+      {/* Background circles */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-300 opacity-40 pointer-events-none rounded-full blur-xl z-[0]" />
       <div className="absolute bottom-[-40px] right-[-60px] w-80 h-80 bg-pink-300 opacity-40 pointer-events-none rounded-full blur-xl z-[0]" />
 
       <div className="relative z-10">
-        {/* Animated Hero Image */}
+        {/* Animated Brand Logo (fill in to be whatever you want) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -71,7 +71,7 @@ export default function AboutMe({ brandName = "YourBeats" }: AboutProps) {
           production, you're in the right place.
         </motion.p>
 
-        {/* Social Icons */}
+        {/* Social Icons (fill in whatever socials you have) */}
         <motion.div
           className="mt-10 flex justify-center gap-6 text-pink-300 text-4xl"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -85,7 +85,7 @@ export default function AboutMe({ brandName = "YourBeats" }: AboutProps) {
           <FaPatreon className="hover:text-pink-500 cursor-pointer" />
         </motion.div>
 
-        {/* Social Buttons */}
+        {/* Social Buttons - Rectangular (same here) */}
         <motion.div
           className="mt-12 space-y-4 max-w-lg mx-auto"
           initial={{ opacity: 0, y: 20 }}

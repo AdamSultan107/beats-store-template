@@ -22,10 +22,21 @@ export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const router = useRouter();
 
-  const guestId =
-    typeof window !== "undefined" ? getOrGenerateGuestId() : null;
+  const guestId = typeof window !== "undefined" ? getOrGenerateGuestId() : null;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+        setEmail(user.email ?? "");
+      }
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     async function fetchCart() {
@@ -55,10 +66,9 @@ export default function CheckoutPage() {
 
   const total = cartItems.reduce((sum, item) => sum + item.kit.price, 0);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guestId || !email) return alert("Missing info");
-
+    if (!email) return alert("Missing email.");
     setSubmitting(true);
 
     const cartData = cartItems.map((item) => ({
@@ -67,15 +77,19 @@ export default function CheckoutPage() {
       price: item.kit.price,
     }));
 
-    const { error } = await supabase.from("guest_orders").insert([
-      {
-        guest_id: guestId,
-        name: name || null,
-        email,
-        total,
-        cart_data: cartData,
-      },
-    ]);
+    const orderData = {
+      name: name || null,
+      email,
+      total,
+      cart_data: cartData,
+    };
+
+    const table = userId ? "user_orders" : "guest_orders";
+    const payload = userId
+      ? { ...orderData, user_id: userId }
+      : { ...orderData, guest_id: guestId };
+
+    const { error } = await supabase.from(table).insert([payload]);
 
     if (error) {
       console.error("Order failed:", error);
@@ -84,17 +98,30 @@ export default function CheckoutPage() {
       return;
     }
 
-    await supabase.from("cart_items").delete().eq("guest_id", guestId);
-    router.push("/thankyou?status=success");
+    // 🔁 Create Stripe Checkout session
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: cartData, email }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.url) {
+      await supabase.from("cart_items").delete().eq("guest_id", guestId);
+      window.location.href = data.url;
+    } else {
+      alert("Checkout failed.");
+      console.error("Stripe error:", data.error);
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="bg-white min-h-screen text-black font-[Arial_Narrow]">
       <Navbar />
       <main className="max-w-3xl mx-auto px-6 py-16">
-        <h1 className="text-3xl font-bold text-pink-500 mb-8 text-center">
-          Checkout
-        </h1>
+        <h1 className="text-3xl font-bold text-pink-500 mb-8 text-center">Checkout</h1>
 
         {loading ? (
           <p className="text-center">Loading cart...</p>
@@ -102,7 +129,7 @@ export default function CheckoutPage() {
           <p className="text-center text-lg text-neutral-500">Your cart is empty.</p>
         ) : (
           <>
-            <form onSubmit={handleSubmit} className="space-y-6 mb-10">
+            <form onSubmit={handleCheckout} className="space-y-6 mb-10">
               <div>
                 <label className="block text-sm font-semibold mb-1">Name (optional)</label>
                 <input
@@ -111,16 +138,18 @@ export default function CheckoutPage() {
                   className="w-full border border-pink-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">Email</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-pink-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
-                />
-              </div>
+              {!userId && (
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full border border-pink-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
+                  />
+                </div>
+              )}
 
               <button
                 type="submit"
@@ -142,7 +171,9 @@ export default function CheckoutPage() {
                     className="border px-4 py-2 rounded flex justify-between"
                   >
                     <span>{item.kit.name}</span>
-                    <span className="text-pink-500 font-bold">${item.kit.price.toFixed(2)}</span>
+                    <span className="text-pink-500 font-bold">
+                      ${item.kit.price.toFixed(2)}
+                    </span>
                   </li>
                 ))}
               </ul>
