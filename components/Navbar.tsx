@@ -19,6 +19,9 @@ import { useRouter } from "next/navigation";
 
 const sections = ["beats", "about", "kits"];
 
+// Navbar component, containing the brand logo to the left, navbar links in the center left,
+// the audio player in the center right, and either: profile and cart icons if you're logged out,
+// or a "logged in as: email" notification, cart icon, and a log out button if you're logged in
 export default function Navbar() {
   const [cartItems, setCartItems] = useState(0);
   const [activeSection, setActiveSection] = useState("");
@@ -28,6 +31,7 @@ export default function Navbar() {
 
   const router = useRouter();
 
+  // Get the email you used to log in, if you're logged in
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -36,6 +40,7 @@ export default function Navbar() {
     fetchUser();
   }, []);
 
+  // Cart item count display
   useEffect(() => {
     const fetchCartCount = async () => {
       const guestId = localStorage.getItem("shadx2_guest_id");
@@ -84,12 +89,14 @@ export default function Navbar() {
         : "text-neutral-800 hover:text-pink-400"
     }`;
 
+  // Handle profile click, redirect to login if not logged in
   const handleProfileClick = () => {
     if (!userEmail) {
       router.push("/login");
     }
   };
 
+  // Handle logout, clear session and reload page
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -119,7 +126,7 @@ export default function Navbar() {
       `}</style>
 
       <div className="w-full mx-auto px-4 grid grid-cols-[auto_1fr_auto] items-center">
-        {/* Left: Logo */}
+        {/* Logo */}
         <div className="flex items-center">
           <a href="/" className="flex items-center animate-floating">
             <Music className="w-6 h-6 text-pink-500 mr-2" />
@@ -127,7 +134,7 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Center: Nav + Audio */}
+        {/* Navlinks + Audio */}
         <div className="hidden md:flex justify-center items-center font-[Arial_Narrow] relative">
           <div className="flex gap-6 text-[1.15rem]">
             <a href="/">Home</a>
@@ -166,13 +173,14 @@ export default function Navbar() {
               )}
             </div>
           </div>
-
+            
+          {/* Audio player component */}
           <div className="ml-16">
             <AudioPlayer />
           </div>
         </div>
 
-        {/* Right: Icons */}
+        {/* Icons */}
         <div className="flex justify-end items-center gap-4">
           {userEmail && (
             <span className="text-sm text-neutral-600 italic">

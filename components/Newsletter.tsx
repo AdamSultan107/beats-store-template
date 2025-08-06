@@ -10,7 +10,9 @@ export default function MailingList() {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { toast } = useToast();
-
+  
+  // Handle subscription logic
+  // Still working on backend integration
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;

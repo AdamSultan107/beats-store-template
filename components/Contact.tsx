@@ -7,6 +7,7 @@ import { Mail, Instagram, Twitter, Youtube } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 
+// Basic contact form component, filled with placeholder data
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -108,6 +109,7 @@ export default function Contact() {
             </form>
 
             {/* Info / Social */}
+            {/* Replace with your own emails, social media, and logic */}
             <div className="space-y-6 text-left">
               <div>
                 <h3 className="text-xl font-semibold mb-3">Contact Info</h3>

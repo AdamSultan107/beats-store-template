@@ -3,6 +3,7 @@ import Image from "next/image";
 import Logo from "@/public/shadlogo.png";
 
 export default function Footer() {
+  // Footer component with brand logo links and social media, mainly filled with placeholder data
   return (
     <footer className="bg-white text-black border-t border-neutral-200 font-[Arial_Narrow]">
       <div className="container mx-auto px-4 py-16">

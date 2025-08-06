@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FaPlay, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+// Hard-coded track section, can contain actual items in the Supabase; working on backend integration
 const tracks = [
   {
     title: "Electric Dreams",

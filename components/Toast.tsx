@@ -10,6 +10,7 @@ interface ToastProps {
   type?: "success" | "warning";
 }
 
+// Built-in toast component for ease of use, displaying messages
 export default function Toast({
   message,
   show,

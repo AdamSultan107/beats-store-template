@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import supabase from "@/lib/supabaseClient";
 import Toast from "@/components/Toast";
 
+// Listening for Supabase auth state changes
+// and showing a toast notification when the user logs in
 export default function AuthListener() {
   const hasToastedRef = useRef(false);
 
@@ -17,6 +19,7 @@ export default function AuthListener() {
     setToastVisible(true);
   };
 
+  // Toast effect when user logs in
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session?.user && !hasToastedRef.current) {

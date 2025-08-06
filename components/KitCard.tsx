@@ -13,6 +13,8 @@ type KitCardProps = {
   index: number;
 };
 
+// KitCards are used to display individual sound kits showed in the store section
+// complete with animations
 export default function KitCard({ id, name, type, price, index }: KitCardProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);

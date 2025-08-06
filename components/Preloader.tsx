@@ -11,6 +11,8 @@ export default function Preloader() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Optional preloader animation containing the logo for your website; alter visible duration 
+  // as you like
   return (
     <AnimatePresence>
       {isVisible && (
