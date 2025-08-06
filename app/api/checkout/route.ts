@@ -1,4 +1,3 @@
-// app/api/checkout/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -14,9 +13,6 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    console.log('🧾 Items received in /api/checkout:', items);
-    console.log('✅ Kit IDs extracted:', items.map((item: any) => item.id));
-
     const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",

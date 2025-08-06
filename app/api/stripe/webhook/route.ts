@@ -9,7 +9,7 @@ export const config = {
   },
 };
 
-// ✅ Setup clients
+// Setup clients
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-07-30.basil',
 });
@@ -21,6 +21,8 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// Expiration time for a download link is set to 24 hour CUSTOMIZABLE
+// You can change this value to suit your needs
 const BUCKET_NAME = 'kits';
 const EXPIRATION_SECONDS = 60 * 60 * 24; // 24 hours
 
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
   } catch (err: any) {
-    console.error('❌ Webhook signature verification failed.', err.message);
+    console.error('Webhook signature verification failed.', err.message);
     return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
@@ -43,28 +45,23 @@ export async function POST(req: NextRequest) {
     const email = session.customer_email || session.customer_details?.email;
 
     const kitIds = session.metadata?.kitIds?.split(',') || [];
-
-    console.log('🧩 Kit IDs:', kitIds);
-    console.log('📨 Email:', email);
-
-    // Step 1: Get kits from Supabase
+    
+    // Get kits from Supabase
     const { data: kits, error } = await supabaseAdmin
       .from('kits')
       .select('id, name, file_path')
       .in('id', kitIds);
 
     if (error || !kits?.length) {
-      console.error('❌ Supabase kit fetch error:', error);
+      console.error('Supabase kit fetch error:', error);
       return NextResponse.json({ error: 'Kit lookup failed' }, { status: 500 });
     }
 
-    console.log('📦 Kits fetched:', kits);
-
-    // Step 2: Generate signed URLs
+    // Generate signed URLs
     const signedLinks = await Promise.all(
       kits.map(async (kit) => {
         if (!kit.file_path) {
-          console.warn(`⚠️ Kit ${kit.name} has no file_path`);
+          console.warn(`Kit ${kit.name} has no file_path`);
           return null;
         }
 
@@ -73,7 +70,7 @@ export async function POST(req: NextRequest) {
           .createSignedUrl(kit.file_path.trim(), EXPIRATION_SECONDS);
 
         if (error || !data?.signedUrl) {
-          console.error(`❌ Failed to sign URL for ${kit.name}:`, error);
+          console.error(`Failed to sign URL for ${kit.name}:`, error);
           return null;
         }
 
@@ -89,7 +86,7 @@ export async function POST(req: NextRequest) {
     );
 
     if (!filteredLinks.length) {
-      console.warn('⚠️ No valid signed links were generated.');
+      console.warn('No valid signed links were generated.');
     }
 
     const kitListHTML = filteredLinks
@@ -99,6 +96,8 @@ export async function POST(req: NextRequest) {
       )
       .join('');
 
+    // Prepare the HTML content for the email, including the download links. Feel free to remove the download page
+    // if you don't want to include it.
     const html = `
       <h2>Your order is confirmed!</h2>
       <p>Thanks for purchasing from shadx2.</p>
@@ -110,8 +109,6 @@ export async function POST(req: NextRequest) {
       <p>Visit your <a href="https://shadx2.com/thankyou">Thank You page</a> to download again.</p>
     `;
 
-    console.log('✉️ Email HTML Preview:', html);
-
     // Step 3: Send confirmation email
     try {
       await resend.emails.send({
@@ -120,9 +117,8 @@ export async function POST(req: NextRequest) {
         subject: 'Your shadx2 Kit Download Links',
         html,
       });
-      console.log('✅ Confirmation email sent to', email);
     } catch (emailErr) {
-      console.error('❌ Failed to send confirmation email:', emailErr);
+      console.error('Failed to send confirmation email:', emailErr);
     }
   }
 

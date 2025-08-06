@@ -7,6 +7,7 @@ import { getOrGenerateGuestId } from "@/lib/guest";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+// Cart item type
 type CartItem = {
   id: string;
   kit_id: string;
@@ -16,6 +17,7 @@ type CartItem = {
   };
 };
 
+// Checkout page component, fetching cart items and handling checkout
 export default function CheckoutPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,6 +27,7 @@ export default function CheckoutPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const router = useRouter();
 
+  // Generate or retrive a unique guest ID
   const guestId = typeof window !== "undefined" ? getOrGenerateGuestId() : null;
 
   useEffect(() => {
@@ -64,13 +67,16 @@ export default function CheckoutPage() {
     fetchCart();
   }, [guestId]);
 
+  // Calculate order total
   const total = cartItems.reduce((sum, item) => sum + item.kit.price, 0);
 
+  // Handling checkout submission
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return alert("Missing email.");
     setSubmitting(true);
 
+    // Prepare cart and order data
     const cartData = cartItems.map((item) => ({
       kit_id: item.kit_id,
       name: item.kit.name,
@@ -98,7 +104,7 @@ export default function CheckoutPage() {
       return;
     }
 
-    // 🔁 Create Stripe Checkout session
+    // Create Stripe Checkout session
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

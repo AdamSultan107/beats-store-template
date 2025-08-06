@@ -23,6 +23,7 @@ export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Get cart items from Supabase
   const fetchCartItems = async () => {
     const guestId = localStorage.getItem("shadx2_guest_id");
     if (!guestId) return;
@@ -46,11 +47,13 @@ export default function CartPage() {
     setLoading(false);
   };
 
+  // Remove an item from the cart
   const handleRemove = async (itemId: string) => {
     await supabase.from("cart_items").delete().eq("id", itemId);
     fetchCartItems();
   };
 
+  // Clear the cart, show a confirmation modal then a toast notification
   const handleClearCart = async () => {
     const guestId = localStorage.getItem("shadx2_guest_id");
     if (!guestId) return;

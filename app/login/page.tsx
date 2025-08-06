@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import Toast from "@/components/Toast";
 
+// Basic log in page or sign up page, user can switch between the two
+// Recorded in Supabase auth
 export default function AuthPage() {
   const router = useRouter();
 
@@ -12,7 +14,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
 
-  // ✅ Toast state
+  // Toast state
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "warning">("success");
@@ -59,7 +61,7 @@ export default function AuthPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      {/* ✅ Toast Component */}
+      {/* Toast Component */}
       <Toast
         message={toastMessage}
         show={toastVisible}

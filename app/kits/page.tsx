@@ -18,6 +18,7 @@ type Kit = {
   keywords?: string;
 };
 
+// All kits page; fetching all kits from Supabase
 export default function KitsPage() {
   const [kits, setKits] = useState<Kit[]>([]);
   const [search, setSearch] = useState("");
@@ -36,6 +37,8 @@ export default function KitsPage() {
     fetchKits();
   }, []);
 
+  // Basic search functionality using keywords, name, and type, entered as values in Supabase
+  // This can be extended to include more fields as needed
   const filteredKits = kits.filter((kit) => {
     const target = `${kit.name} ${kit.type} ${kit.keywords || ""}`.toLowerCase();
     return target.includes(search.toLowerCase());
@@ -48,7 +51,7 @@ export default function KitsPage() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <h1 className="text-3xl font-bold mb-8 text-center text-pink-500">All Kits</h1>
 
-        {/* 🔍 Search Input */}
+        {/* Search Input */}
         <div className="flex justify-center mb-10">
           <input
             type="text"

@@ -6,6 +6,8 @@ import Footer from "@/components/Footer"
 import KitCard from "@/components/KitCard"
 import supabase from "@/lib/supabaseClient"
 
+// Just an example section of a multi kits page, completely optional or can be customized
+// with another type of kit
 export default function MultiKitsPage() {
   const [kits, setKits] = useState<any[]>([])
 

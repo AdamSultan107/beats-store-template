@@ -1,4 +1,4 @@
-// lib/guest.ts
+// Handle guest ID generation and retrieval
 export function getOrGenerateGuestId(): string {
   if (typeof window === "undefined") return "";
 

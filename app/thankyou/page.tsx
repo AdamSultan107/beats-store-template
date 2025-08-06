@@ -25,6 +25,8 @@ type KitDownload = {
   signedUrl: string;
 };
 
+// Thank you page following checkout, displaying order details and download links
+// and a timer for link expiration
 export default function ThankYouPage() {
   const [order, setOrder] = useState<Order | null>(null);
   const [downloads, setDownloads] = useState<KitDownload[]>([]);
@@ -79,7 +81,7 @@ export default function ThankYouPage() {
 
           for (const kit of kitsData) {
             if (!kit.file_path) {
-              console.error(`❌ No file_path for kit ${kit.name}`);
+              console.error(`No file_path for kit ${kit.name}`);
               continue;
             }
 
@@ -90,7 +92,7 @@ export default function ThankYouPage() {
               .createSignedUrl(cleanPath, EXPIRATION_SECONDS);
 
             if (!signed?.signedUrl || urlError) {
-              console.error(`❌ Failed to create signed URL for: ${cleanPath}`, urlError);
+              console.error(`Failed to create signed URL for: ${cleanPath}`, urlError);
             } else {
               signedLinks.push({ name: kit.name, signedUrl: signed.signedUrl });
             }
@@ -106,7 +108,7 @@ export default function ThankYouPage() {
     fetchOrder();
   }, []);
 
-  // ⏱️ Timer logic
+  // Timer logic
   useEffect(() => {
     const interval = setInterval(() => {
       const expiresAt = parseInt(localStorage.getItem("shadx2_download_expires_at") || "0", 10);

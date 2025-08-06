@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import { v4 as uuidv4 } from "uuid";
 import Toast from "@/components/Toast";
 
+// Kit props
 type Kit = {
   id: string;
   name: string;
@@ -17,13 +18,14 @@ type Kit = {
   image_url: string | null;
 };
 
+// Dynamic kit detail page; fetching details of your selected kit from Supabase
 export default function KitDetailPage() {
   const { id } = useParams();
   const [kit, setKit] = useState<Kit | null>(null);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
 
-  // ✅ Toast state
+  // Toast state
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "warning">("success");
@@ -34,7 +36,7 @@ export default function KitDetailPage() {
     setToastVisible(true);
   };
 
-  // ✅ Ensure guest_id is stored
+  // Ensure guest_id is stored
   useEffect(() => {
     const storedId = localStorage.getItem("shadx2_guest_id");
     if (!storedId) {
@@ -43,7 +45,7 @@ export default function KitDetailPage() {
     }
   }, []);
 
-  // ✅ Fetch kit details
+  // Fetch kit details
   useEffect(() => {
     async function fetchKit() {
       const { data, error } = await supabase
@@ -63,7 +65,7 @@ export default function KitDetailPage() {
     if (id) fetchKit();
   }, [id]);
 
-  // ✅ Add to cart with duplicate check
+  // Add to cart with duplicate check
   const handleAddToCart = async () => {
     if (!kit) return;
 
@@ -126,7 +128,7 @@ export default function KitDetailPage() {
     <div className="bg-white min-h-screen font-[Arial_Narrow] text-black">
       <Navbar />
 
-      {/* ✅ Toast Component */}
+      {/* Toast Component */}
       <Toast
         message={toastMessage}
         show={toastVisible}
@@ -166,6 +168,7 @@ export default function KitDetailPage() {
               <p className="italic text-neutral-600 mb-2 text-lg">
                 Files will be available after purchase.
               </p>
+              {/* Optional: can add in Supabase the file sizes for all kits; can implement upon request */}
               <ul className="space-y-1">
                 <li className="text-md text-neutral-700">
                   📦 ZIP (file size and content vary)
