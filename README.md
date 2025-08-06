@@ -25,6 +25,7 @@ This is a template for a digital beats e-commerce store. It includes placeholder
 - This is a template with placeholder data. Replace with your own kits and assets.
 - The Newsletter and Contact forms are styled but not fully implemented.
 - You must create your own Supabase project and replicate the required schema (`kits`, `cart_items`, `users`, etc.).
+- You must get your own API keys for Supabase, Stripe, and Resend.
 
 For implementation questions or style customizations, contact **aksultan05@gmail.com**
 
