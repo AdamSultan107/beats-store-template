@@ -1,0 +1,265 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import Image from "next/image";
+import Logo from "@/public/shadlogo.png";
+import { FaShoppingCart, FaUser, FaBars } from "react-icons/fa";
+import { Music } from "lucide-react";
+import Link from "next/link";
+import AudioPlayer from "@/components/AudioPlayer";
+import supabase from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
+
+const sections = ["beats", "about", "kits"];
+
+// Navbar component, containing the brand logo to the left, navbar links in the center left,
+// the audio player in the center right, and either: profile and cart icons if you're logged out,
+// or a "logged in as: email" notification, cart icon, and a log out button if you're logged in
+export default function Navbar() {
+  const [cartItems, setCartItems] = useState(0);
+  const [activeSection, setActiveSection] = useState("");
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [kitsOpen, setKitsOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  // Get the email you used to log in, if you're logged in
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUserEmail(session?.user?.email || null);
+    };
+    fetchUser();
+  }, []);
+
+  // Cart item count display
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      const guestId = localStorage.getItem("shadx2_guest_id");
+      if (!guestId) return;
+
+      const { count } = await supabase
+        .from("cart_items")
+        .select("id", { count: "exact" })
+        .eq("guest_id", guestId);
+
+      setCartItems(count || 0);
+    };
+
+    fetchCartCount();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setIsSheetOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0.1 }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const linkClass = (id: string) =>
+    `text-medium font-medium lowercase transition ${
+      activeSection === id
+        ? "text-pink-500 underline underline-offset-4"
+        : "text-neutral-800 hover:text-pink-400"
+    }`;
+
+  // Handle profile click, redirect to login if not logged in
+  const handleProfileClick = () => {
+    if (!userEmail) {
+      router.push("/login");
+    }
+  };
+
+  // Handle logout, clear session and reload page
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout failed:", error.message);
+    } else {
+      window.location.reload(); // reload to reset UI state
+    }
+  };
+
+  return (
+    <nav className="sticky top-0 z-50 bg-white py-4">
+      <style jsx>{`
+        @keyframes floating {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+        .animate-floating {
+          animation: floating 2.5s ease-in-out infinite;
+        }
+      `}</style>
+
+      <div className="w-full mx-auto px-4 grid grid-cols-[auto_1fr_auto] items-center">
+        {/* Logo */}
+        <div className="flex items-center">
+          <a href="/" className="flex items-center animate-floating">
+            <Music className="w-6 h-6 text-pink-500 mr-2" />
+            <span className="text-xl font-bold text-pink-500">YourBeats</span>
+          </a>
+        </div>
+
+        {/* Navlinks + Audio */}
+        <div className="hidden md:flex justify-center items-center font-[Arial_Narrow] relative">
+          <div className="flex gap-6 text-[1.15rem]">
+            <a href="/">Home</a>
+            <a href="https://www.beatstars.com/">Beats</a>
+            <a href="/about">About Me</a>
+
+            <div className="relative">
+              <button
+                onClick={() => setKitsOpen(!kitsOpen)}
+                className="flex items-center gap-1 focus:outline-none text-pink-400 cursor-pointer"
+              >
+                Kits <span className="text-pink-300">▾</span>
+              </button>
+
+              {kitsOpen && (
+                <div className="absolute top-full left-0 mt-2 flex flex-col bg-white shadow-xl rounded-2xl py-4 px-6 w-48 z-50">
+                  <Link
+                    href="/kits"
+                    className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300"
+                  >
+                    All Kits
+                  </Link>
+                  <Link
+                    href="/kits/creative"
+                    className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300"
+                  >
+                    Creative Kits
+                  </Link>
+                  <Link
+                    href="/kits/multi"
+                    className="text-neutral-800 text-sm py-1 px-2 rounded-md transition hover:bg-pink-100 hover:text-pink-300"
+                  >
+                    Multi Kits
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+            
+          {/* Audio player component */}
+          <div className="ml-16">
+            <AudioPlayer />
+          </div>
+        </div>
+
+        {/* Icons */}
+        <div className="flex justify-end items-center gap-4">
+          {userEmail && (
+            <span className="text-sm text-neutral-600 italic">
+              Logged in as: {userEmail}
+            </span>
+          )}
+
+          {/* Cart */}
+          <Link href="/cart">
+            <Button
+              variant="ghost"
+              className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent relative"
+            >
+              <FaShoppingCart className="h-5 w-5" />
+              {cartItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-pink-400 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                  {cartItems}
+                </span>
+              )}
+            </Button>
+          </Link>
+
+          {/* Profile or Logout */}
+          {userEmail ? (
+            <Button
+              onClick={handleLogout}
+              variant="ghost"
+              className="h-10 px-3 text-sm text-neutral-800 hover:text-pink-400 hover:bg-transparent"
+            >
+              Log Out
+            </Button>
+          ) : (
+            <Button
+              onClick={handleProfileClick}
+              variant="ghost"
+              className="h-10 w-10 p-0 text-neutral-800 cursor-pointer hover:text-pink-400 hover:bg-transparent"
+            >
+              <FaUser className="h-5 w-5" />
+            </Button>
+          )}
+
+          {/* Mobile Menu */}
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                className="md:hidden h-10 w-10 p-0 text-neutral-800 hover:text-pink-400 hover:bg-transparent"
+              >
+                <FaBars className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="w-[300px] sm:w-[400px] bg-white text-black pt-24">
+              <SheetTitle className="sr-only">Main Menu</SheetTitle>
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={Logo}
+                    alt="Shadx2 Logo"
+                    width={32}
+                    height={32}
+                    className="w-auto h-8"
+                  />
+                </div>
+                <div className="flex flex-col gap-4 text-[1.15rem] font-[Arial_Narrow]">
+                  <a href="#beats" className={linkClass("beats") + " p-2"}>
+                    beats
+                  </a>
+                  <a href="#about" className={linkClass("about") + " p-2"}>
+                    about me
+                  </a>
+                  <a href="#kits" className={linkClass("kits") + " p-2"}>
+                    kits
+                  </a>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </nav>
+  );
+}
